@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails pour {{ command.reference }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <a href="{{ path('command.index') }}">Retour aux commandes</a>
+        <h1 class="red">Détails pour la commande {{ command.reference }}</h1>
+        <div class="order-tracking-line-container">
+            <div class="order-tracking-line">
+                <div class="tracking-step">
+                    <div class="tracking-point green"></div>
+                    <div class="tracking-text">fichier(s) reçu(s)</div>
+                </div>
+                <div class="tracking-step">
+                    <div class="tracking-point green"></div>
+                    <div class="tracking-text">B.A.T. reçu</div>
+                </div>
+                <div class="tracking-step">
+                    <div class="tracking-point green"></div>
+                    <div class="tracking-text">production terminée</div>
+                </div>
+                <div class="tracking-step">
+                    <div class="tracking-point orange"></div>
+                    <div class="tracking-text">en cours de livraison</div>
+                </div>
+                <div class="tracking-step">
+                    <div class="tracking-point grey"></div>
+                    <div class="tracking-text">&nbsp;</div>
+                </div>
+            </div>
+        </div>
+        <div class="order-blocks">
+            <div class="order-block order-infos">
+                <h1 class="order-block-title">Informations sur la commande :</h1>
+                <div class="order-block-content">
+                    <p><b>Référence produit :</b> {{ command.product }}</p>
+                    <p><b>Quantité commandée :</b> {{ command.quantity }}</p>
+                    <p><b>Commande passée le
+                            :</b> {{ command.createdAt.date }}</p>
+                    <p><b>Commande mise à jour le
+                            :</b> {{ command.updatedAt.date }}</p>
+                    <p><b>Estimation livraison :</b> <span class="text-danger">WIP</span></p>
+                    <p><b>État de la commande :</b> {{ command.stateType }}</p>
+                    <p><b>Stock actuel :</b> <span class="text-danger">WIP</span></p>
+                    <a href="#" data-toggle="modal" data-target="#filesModal">
+                        Voir les fichiers joints (<span class="text-danger font-weight-bold">WIP</span>)
+                    </a>
+                </div>
+            </div>
+            <div class="order-block order-tracking">
+                <h1 class="order-block-title">Suivi de la livraison :</h1>
+                <div class="order-block-content">
+                    <span class="text-danger font-weight-bold">WIP</span>
+                </div>
+            </div>
+            <div class="modal fade bd-example-modal-lg" id="filesModal" tabindex="-1" role="dialog"
+                 aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title red">Fichiers joints</h3>
+                            <button type="button" class="close-icon" data-dismiss="modal" aria-label="Close">
+                                <img src="">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row files-container">
+                                <span class="text-danger">WIP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

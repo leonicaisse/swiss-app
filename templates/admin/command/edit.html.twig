@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Éditer la commande' %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Éditer la commande {{ command.reference }}</h1>
+        {{ include('admin/command/_form.html.twig') }}
+    </div>
+{% endblock %}
+
