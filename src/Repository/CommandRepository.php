@@ -49,10 +49,22 @@ class CommandRepository extends ServiceEntityRepository
         }
 
 
-        if ($search->getSearchBy()) {
+        /*
+         //Pour searchBy
+         if ($search->getSearchBy()) {
             if ($search->getSearchInput()) {
                 $query
                     ->andWhere('c.' . $search->getSearchBy() . ' LIKE :searchinput')
+                    ->setParameter('searchinput', '%' . $search->getSearchInput() . '%');
+            }
+        }
+         */
+
+        //A modifier quand produit ok
+        if ($search->getSearchBy()) {
+            if ($search->getSearchInput()) {
+                $query
+                    ->andWhere('c.' . 'reference' . ' LIKE :searchinput') //c.$search->getSearchBy()
                     ->setParameter('searchinput', '%' . $search->getSearchInput() . '%');
             }
         }

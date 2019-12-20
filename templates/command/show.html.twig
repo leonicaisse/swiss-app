@@ -3,7 +3,7 @@
 {% block title %}Détails pour {{ command.reference }}{% endblock %}
 
 {% block body %}
-    <div class="container">
+    <div class="container mt-4">
         <a href="{{ path('command.index') }}">Retour aux commandes</a>
         <h1 class="red">Détails pour la commande {{ command.reference }}</h1>
         <div class="order-tracking-line-container">
@@ -34,7 +34,6 @@
             <div class="order-block order-infos">
                 <h1 class="order-block-title">Informations sur la commande :</h1>
                 <div class="order-block-content">
-                    <p><b>Référence produit :</b> {{ command.product }}</p>
                     <p><b>Quantité commandée :</b> {{ command.quantity }}</p>
                     <p><b>Commande passée le
                             :</b> {{ command.createdAt.date }}</p>
@@ -42,7 +41,7 @@
                             :</b> {{ command.updatedAt.date }}</p>
                     <p><b>Estimation livraison :</b> <span class="text-danger">WIP</span></p>
                     <p><b>État de la commande :</b> {{ command.stateType }}</p>
-                    <p><b>Stock actuel :</b> <span class="text-danger">WIP</span></p>
+                    <p><b>Stock actuel : </b> command.product.quantity </p>
                     <a href="#" data-toggle="modal" data-target="#filesModal">
                         Voir les fichiers joints (<span class="text-danger font-weight-bold">WIP</span>)
                     </a>

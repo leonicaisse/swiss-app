@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Command;
+//use App\Entity\Command;
 use App\Entity\CommandSearch;
 use App\Form\CommandSearchType;
 use App\Repository\CommandRepository;
@@ -27,6 +27,7 @@ class CommandController extends AbstractController
     /**
      * CommandController constructor.
      * @param CommandRepository $repository
+     * @param EntityManagerInterface $em
      */
     public function __construct(CommandRepository $repository, EntityManagerInterface $em)
     {
@@ -36,6 +37,9 @@ class CommandController extends AbstractController
 
     /**
      * @Route("/commands", name="command.index")
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
      */
     public function index(PaginatorInterface $paginator, Request $request): Response
     {

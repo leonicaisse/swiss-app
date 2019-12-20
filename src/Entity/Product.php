@@ -5,23 +5,12 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CommandRepository")
- * @UniqueEntity("reference")
+ * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  */
-class Command
+class Product
 {
-    const STATE = [
-        "0" => "En attente de fichier",
-        "1" => "En attente de B.A.T.",
-        "2" => "En cours de production",
-        "3" => "En cours de livraison",
-        "4" => "Livrée",
-    ];
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -30,7 +19,11 @@ class Command
     private $id;
 
     /**
-     * @Assert\Regex(pattern="/[0-9]{6}[\.][0-9]{4}$/", htmlPattern=false, message="La référence doit être de la forme 000000.0000")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Command", inversedBy="products")
+     */
+    private $commands;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $reference;
@@ -41,9 +34,9 @@ class Command
     private $quantity;
 
     /**
-     * @ORM\Column(type="integer", options={"default":0})
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $state = 0;
+    private $critical;
 
     /**
      * @ORM\Column(type="datetime")
@@ -56,20 +49,45 @@ class Command
     private $updated_at;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Product", mappedBy="commands")
+     * Product constructor.
+     * @throws \Exception
      */
-    private $products;
-
     public function __construct()
     {
+        $this->commands = new ArrayCollection();
         $this->created_at = new \DateTime();
         $this->updated_at = new \DateTime();
-        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return Collection|Command[]
+     */
+    public function getCommands(): Collection
+    {
+        return $this->commands;
+    }
+
+    public function addCommand(Command $command): self
+    {
+        if (!$this->commands->contains($command)) {
+            $this->commands[] = $command;
+        }
+
+        return $this;
+    }
+
+    public function removeCommand(Command $command): self
+    {
+        if ($this->commands->contains($command)) {
+            $this->commands->removeElement($command);
+        }
+
+        return $this;
     }
 
     public function getReference(): ?string
@@ -96,21 +114,16 @@ class Command
         return $this;
     }
 
-    public function getState(): ?int
+    public function getCritical(): ?int
     {
-        return $this->state;
+        return $this->critical;
     }
 
-    public function setState(int $state): self
+    public function setCritical(?int $critical): self
     {
-        $this->state = $state;
+        $this->critical = $critical;
 
         return $this;
-    }
-
-    public function getStateType(): string
-    {
-        return self::STATE[$this->getState()];
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
@@ -133,34 +146,6 @@ class Command
     public function setUpdatedAt(\DateTimeInterface $updated_at): self
     {
         $this->updated_at = $updated_at;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Product[]
-     */
-    public function getProducts(): Collection
-    {
-        return $this->products;
-    }
-
-    public function addProduct(Product $product): self
-    {
-        if (!$this->products->contains($product)) {
-            $this->products[] = $product;
-            $product->addCommand($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProduct(Product $product): self
-    {
-        if ($this->products->contains($product)) {
-            $this->products->removeElement($product);
-            $product->removeCommand($this);
-        }
 
         return $this;
     }

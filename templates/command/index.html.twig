@@ -38,10 +38,15 @@
                     <div class="card">
                         <div class="card-body d-flex">
                             <div>
-                                <h3 class="ref">n° commande: <span class="red">{{ command.reference }}</span></h3>
-                                <h4 class="ref">ref. produit: <span class="red">{{ command.product }}</span></h4>
-                                <h5 class="ref">quantité: <span class="red">{{ command.quantity }}</span></h5>
-                                <h5 class="ref">commandé le: <span class="red">{{ command.createdAt.date }}</span></h5>
+                                <h3 class="ref">n° commande: {{ command.reference }}</h3>
+                                <h5 class="ref">refs. produit:</h5>
+                                <ul>
+                                    {% for product in command.products %}
+                                        <li>{{ product.reference }}</li>
+                                    {% endfor %}
+                                </ul>
+                                <h5 class="ref">quantité: </h5><span class="red">{{ command.quantity }}</span>
+                                <h5 class="ref">commandé le: </h5><span class="red">{{ command.createdAt.date }}</span>
                                 <p class="state state-{{ command.state }}">{{ command.stateType }}</p>
                             </div>
                             <div class="ml-auto">

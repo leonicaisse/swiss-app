@@ -2,29 +2,28 @@
 
 namespace App\Form;
 
-use App\Entity\Command;
+use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CommandType extends AbstractType
+class ProductType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('reference')
             ->add('quantity')
-            ->add('state', ChoiceType::class, [
-                'choices' => array_flip(Command::STATE)
-            ]);
+            ->add('critical')
+            ->add('created_at')
+            ->add('updated_at')
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Command::class,
-            'translation_domain' => 'forms'
+            'data_class' => Product::class,
         ]);
     }
 }

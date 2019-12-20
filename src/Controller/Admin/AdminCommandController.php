@@ -11,6 +11,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+
+/**
+ * @Route(path="/admin/commands")
+ */
 class AdminCommandController extends AbstractController
 {
     /**
@@ -34,7 +38,7 @@ class AdminCommandController extends AbstractController
     }
 
     /**
-     * @Route(path="/admin/commands", name="admin.command.index")
+     * @Route(path="/", name="admin.command.index")
      * @return \Symfony\Component\HttpFoundation\Response
      */
 
@@ -44,9 +48,8 @@ class AdminCommandController extends AbstractController
         return $this->render('admin/command/index.html.twig', compact('commands'));
     }
 
-
     /**
-     * @Route(path="/admin/commands/new", name="admin.command.new")
+     * @Route(path="/new", name="admin.command.new")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
@@ -69,7 +72,7 @@ class AdminCommandController extends AbstractController
     }
 
     /**
-     * @Route("/admin/commands/{reference}", name="admin.command.edit", requirements={"reference": "[0-9]{6}[\.][0-9]{4}$"}, methods="GET|POST")
+     * @Route(path="/{reference}", name="admin.command.edit", requirements={"reference": "[0-9]{6}[\.][0-9]{4}$"}, methods="GET|POST")
      * @param string $reference
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -77,12 +80,13 @@ class AdminCommandController extends AbstractController
     public function edit(string $reference, Request $request)
     {
         $command = $this->repository->findOneBy(['reference' => $reference]);
+        if (!$command) $this->handleNotFound();
         $form = $this->createForm(CommandType::class, $command);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->flush();
             $this->addFlash('success', 'La commande ' . $command->getReference() . ' a été modifiée avec succès.');
-            return $this->redirectToRoute('admin.command.index');
+            return $this->redirectToRoute('admin.command');
         }
         return $this->render('admin/command/edit.html.twig', [
             'command' => $command,
@@ -91,8 +95,9 @@ class AdminCommandController extends AbstractController
     }
 
     /**
-     * @Route("/admin/commands/{id}", name="admin.command.delete", requirements={"id": "[0-9]+$"}, methods="DELETE" )
+     * @Route(path="/{id}", name="admin.command.delete", methods="DELETE", requirements={"id": "[0-9]+$"})
      * @param Command $command
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function delete(Command $command, Request $request)
@@ -105,4 +110,12 @@ class AdminCommandController extends AbstractController
         return $this->redirectToRoute('admin.command.index');
     }
 
+
+    /**
+     * @Route(path="/{route}", name="admin.command.notfound")
+     */
+    public function handleNotFound()
+    {
+        throw $this->createNotFoundException("La page demandée n'existe pas.");
+    }
 }
