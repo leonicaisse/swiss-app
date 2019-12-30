@@ -27,6 +27,7 @@ class CommandRepository extends ServiceEntityRepository
     public function findAllQuery(CommandSearch $search)
     {
         $query = $this->createQueryBuilder('c');
+        $query->innerJoin('c.products', 'p');
 
         if ($search->getState()) {
             foreach ($search->getState() as $k => $v) {
@@ -36,38 +37,43 @@ class CommandRepository extends ServiceEntityRepository
         }
 
 
-        if ($search->getStock()) {
-            foreach ($search->getStock() as $k => $v) {
-                dump($v);
-                /*
-                //Pour filtrer avec le stock
-                $query->andWhere($query->expr()->orX(
-                    $query->expr()->eq('c.quantity', '5000')
-                ));
-                */
-            }
-        }
-
-
         /*
-         //Pour searchBy
-         if ($search->getSearchBy()) {
-            if ($search->getSearchInput()) {
-                $query
-                    ->andWhere('c.' . $search->getSearchBy() . ' LIKE :searchinput')
-                    ->setParameter('searchinput', '%' . $search->getSearchInput() . '%');
+         * Pour filtrer avec le stock
+        if ($search->getStock()) {
+            $filters = array();
+            foreach ($search->getStock() as $k => $v) {
+                switch ($v) {
+                    case "empty":
+                        array_push($filters, 'p.quantity = 0');
+                        break;
+                    case "low":
+                        array_push($filters, 'p.quantity <= p.critical AND p.quantity > 0');
+                        break;
+                    case "high":
+                        array_push($filters, 'p.quantity > p.critical');
+                        break;
+                }
             }
-        }
-         */
 
-        //A modifier quand produit ok
-        if ($search->getSearchBy()) {
-            if ($search->getSearchInput()) {
-                $query
-                    ->andWhere('c.' . 'reference' . ' LIKE :searchinput') //c.$search->getSearchBy()
-                    ->setParameter('searchinput', '%' . $search->getSearchInput() . '%');
+            $orX = $query->expr()->orX();
+            $orX->addMultiple($filters);
+            $query->andWhere($orX);
+        }
+        */
+
+        if ($search->getSearchInput()) {
+            if ($search->getSearchBy()) {
+                switch ($search->getSearchBy()) {
+                    case 'product':
+                        $query->andWhere('p.reference LIKE :searchinput');
+                        break;
+                    case 'reference':
+                        $query->andWhere('c.reference LIKE :searchinput');
+                }
+                $query->setParameter('searchinput', '%' . $search->getSearchInput() . '%');
             }
         }
+
 
         return $query->getQuery();
     }

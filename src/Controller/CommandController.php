@@ -50,7 +50,7 @@ class CommandController extends AbstractController
         $commands = $paginator->paginate(
             $this->repository->findAllQuery($search),
             $request->query->getInt('page', 1),
-            12
+            15
         );
         return $this->render('command/index.html.twig', [
             'commands' => $commands,

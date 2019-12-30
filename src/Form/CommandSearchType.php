@@ -24,14 +24,14 @@ class CommandSearchType extends AbstractType
             ->add('searchBy', ChoiceType::class, [
                 'choices' => array_flip(CommandSearch::SEARCH_BY)
             ])
-            ->add('stock', ChoiceType::class, [
+            /*->add('stock', ChoiceType::class, [
                 'choices' => array_flip(CommandSearch::STOCK),
                 'expanded' => true,
                 'multiple' => true,
                 'attr' => [
                     'class' => 'form-check-inline'
                 ]
-            ])
+            ])*/
             ->add('state', ChoiceType::class, [
                 'choices' => array_flip(Command::STATE),
                 'expanded' => true,

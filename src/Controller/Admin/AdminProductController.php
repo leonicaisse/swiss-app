@@ -3,10 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Product;
+use App\Entity\ProductSearch;
+use App\Form\ProductSearchType;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use http\Url;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,13 +42,25 @@ class AdminProductController extends AbstractController
 
     /**
      * @Route("/", name="admin.product.index", methods={"GET"})
-     * @param ProductRepository $repository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
      * @return Response
      */
-    public function index(ProductRepository $repository): Response
+    public function index(PaginatorInterface $paginator, Request $request): Response
     {
+        $search = new ProductSearch();
+        $form = $this->createForm(ProductSearchType::class, $search);
+        $form->handleRequest($request);
+
+        $products = $paginator->paginate(
+            $this->repository->findAllQuery($search),
+            $request->query->getInt('page', 1),
+            15
+        );
+
         return $this->render('admin/product/index.html.twig', [
-            'products' => $repository->findAll(),
+            'products' => $products,
+            'form' => $form->createView()
         ]);
     }
 
@@ -83,7 +97,7 @@ class AdminProductController extends AbstractController
     public function edit(string $reference, Request $request): Response
     {
         $product = $this->repository->findOneBy(['reference' => $reference]);
-        if(!$product) $this->handleNotFound();
+        if (!$product) $this->handleNotFound();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

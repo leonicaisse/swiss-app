@@ -55,7 +55,7 @@ class ProductController extends AbstractController
         $products = $paginator->paginate(
             $this->repository->findAllQuery($search),
             $request->query->getInt('page', 1),
-            12
+            15
         );
         return $this->render('product/index.html.twig', [
             'products' => $products,
@@ -64,7 +64,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{reference}", name="admin.product.edit", methods={"GET","POST"}, requirements={"reference": "MOD[0-9]{4}$"})
+     * @Route("/{reference}", name="product.show", methods={"GET","POST"}, requirements={"reference": "MOD[0-9]{4}$"})
      * @param string $reference
      * @return Response
      */

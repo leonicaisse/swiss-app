@@ -3,9 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Command;
+use App\Entity\CommandSearch;
+use App\Form\CommandSearchType;
 use App\Form\CommandType;
 use App\Repository\CommandRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,13 +42,26 @@ class AdminCommandController extends AbstractController
 
     /**
      * @Route(path="/", name="admin.command.index")
+     * @param PaginatorInterface $paginator
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
 
-    public function index()
+    public function index(PaginatorInterface $paginator, Request $request)
     {
-        $commands = $this->repository->findAll();
-        return $this->render('admin/command/index.html.twig', compact('commands'));
+        $search = new CommandSearch();
+        $form = $this->createForm(CommandSearchType::class, $search);
+        $form->handleRequest($request);
+
+        $commands = $paginator->paginate(
+            $this->repository->findAllQuery($search),
+            $request->query->getInt('page', 1),
+            15
+        );
+        return $this->render('admin/command/index.html.twig', [
+            'commands' => $commands,
+            'form' => $form->createView()
+        ]);
     }
 
     /**

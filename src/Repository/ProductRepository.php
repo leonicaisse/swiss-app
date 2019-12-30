@@ -20,14 +20,32 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    /**
+     * @param ProductSearch $search
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllQuery(ProductSearch $search)
     {
         $query = $this->createQueryBuilder('p');
 
         if ($search->getStock()) {
+            $filters = array();
             foreach ($search->getStock() as $k => $v) {
-                dump($v);
+                switch ($v) {
+                    case "empty":
+                        array_push($filters, 'p.quantity = 0');
+                        break;
+                    case "low":
+                        array_push($filters, 'p.quantity <= p.critical AND p.quantity > 0');
+                        break;
+                    case "high":
+                        array_push($filters, 'p.quantity > p.critical');
+                        break;
+                }
             }
+            $orX = $query->expr()->orX();
+            $orX->addMultiple($filters);
+            $query->andWhere($orX);
         }
 
         if ($search->getSearchInput()) {
