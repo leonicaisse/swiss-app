@@ -14,16 +14,14 @@ class ProductType extends AbstractType
         $builder
             ->add('reference')
             ->add('quantity')
-            ->add('critical')
-            ->add('created_at')
-            ->add('updated_at')
-        ;
+            ->add('critical');
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Product::class,
+            'translation_domain' => 'forms.product'
         ]);
     }
 }

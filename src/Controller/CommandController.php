@@ -46,11 +46,10 @@ class CommandController extends AbstractController
         $search = new CommandSearch();
         $form = $this->createForm(CommandSearchType::class, $search);
         $form->handleRequest($request);
-
         $commands = $paginator->paginate(
             $this->repository->findAllQuery($search),
             $request->query->getInt('page', 1),
-            15
+            9
         );
         return $this->render('command/index.html.twig', [
             'commands' => $commands,

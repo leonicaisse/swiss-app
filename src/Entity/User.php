@@ -27,6 +27,11 @@ class User implements UserInterface, \Serializable
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -68,12 +73,28 @@ class User implements UserInterface, \Serializable
      * and populated in any number of different ways when the user object
      * is created.
      *
-     * @return (Role|string)[] The user roles
+     * @return array (Role|string)[] The user roles
      */
-    public function getRoles()
+    public function getRoles(): array
     {
-        return ['ROLE_ADMIN'];
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
+
+    /**
+     * @param mixed $roles
+     * @return User
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+        return $this;
+    }
+
+
 
     /**
      * Returns the salt that was originally used to encode the password.

@@ -54,6 +54,13 @@ class ProductRepository extends ServiceEntityRepository
                 ->setParameter('searchinput', '%' . $search->getSearchInput() . '%');
         }
 
+        if ($search->getOrderBy()) {
+            if ($search->getOrderDirection()) {
+                $query
+                    ->orderBy('p.' . $search->getOrderBy(), $search->getOrderDirection());
+            }
+        }
+
         return $query->getQuery();
     }
 

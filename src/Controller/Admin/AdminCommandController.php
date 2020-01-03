@@ -102,7 +102,7 @@ class AdminCommandController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->flush();
             $this->addFlash('success', 'La commande ' . $command->getReference() . ' a été modifiée avec succès.');
-            return $this->redirectToRoute('admin.command');
+            return $this->redirectToRoute('admin.command.index');
         }
         return $this->render('admin/command/edit.html.twig', [
             'command' => $command,

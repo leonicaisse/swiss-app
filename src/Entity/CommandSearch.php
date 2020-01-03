@@ -17,6 +17,11 @@ class CommandSearch
         "empty" => "Stock absent",
     ];
 
+    const ORDER_BY = [
+        'reference' => 'Numéro de commande',
+        'date' => 'Date de la commande'
+    ];
+
     /**
      * @var string|null
      * @Assert\Type("string")
@@ -28,6 +33,18 @@ class CommandSearch
      * @Assert\Type("string")
      */
     private $searchBy = self::SEARCH_BY['reference'];
+
+    /**
+     * @var string;
+     * @Assert\Type("string")
+     */
+    private $orderBy = 'reference';
+
+    /**
+     * @var string
+     * @Assert\Type("string")
+     */
+    private $orderDirection = 'DESC';
 
     /**
      * @var array
@@ -86,6 +103,51 @@ class CommandSearch
         return self::SEARCH_BY[$this->searchBy];
     }
 
+
+    /**
+     * @return string
+     */
+    public function getOrderBy(): string
+    {
+        return $this->orderBy;
+    }
+
+    /**
+     * @param string $orderBy
+     * @return CommandSearch
+     */
+    public function setOrderBy(string $orderBy): CommandSearch
+    {
+        $this->orderBy = $orderBy;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderByType(): string
+    {
+        return self::ORDER_BY[$this->orderBy];
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderDirection(): string
+    {
+        return $this->orderDirection;
+    }
+
+    /**
+     * @param string $orderDirection
+     * @return CommandSearch
+     */
+    public function setOrderDirection(string $orderDirection): CommandSearch
+    {
+        $this->orderDirection = $orderDirection;
+        return $this;
+    }
+
     /**
      * @return array
      */
@@ -122,5 +184,4 @@ class CommandSearch
         $this->state = $state;
         return $this;
     }
-
 }

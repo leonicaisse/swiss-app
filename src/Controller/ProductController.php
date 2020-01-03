@@ -55,7 +55,7 @@ class ProductController extends AbstractController
         $products = $paginator->paginate(
             $this->repository->findAllQuery($search),
             $request->query->getInt('page', 1),
-            15
+            12
         );
         return $this->render('product/index.html.twig', [
             'products' => $products,

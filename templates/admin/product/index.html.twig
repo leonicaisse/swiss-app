@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title 'Gérer les produits' %}
+{% block title 'Gérer le stock' %}
 
 {% block body %}
     <div class="container mt-4">
-        <h1>Gérer les produits</h1>
+        <h1>Gérer le stock</h1>
+        {{ form_start(form, {'attr':{'class': 'mb-4'}}) }}
         <div class="bg-light pt-3 px-3 pb-1 my-4">
-            {{ form_start(form, {'attr':{'class': 'mb-4'}}) }}
             <div class="form-row">
                 <div class="form-group w-100">
                     {{ form_label(form.searchInput) }}
@@ -24,8 +24,21 @@
                     </div>
                 </div>
             </div>
-            {{ form_end(form, {'render_rest' : false}) }}
         </div>
+        <div class="pt-3 pb-1 mt-2 mb-4">
+            <div class="form-row align-items-center">
+                <div class="col-auto">
+                    {{ form_label(form.orderBy) }} :
+                </div>
+                <div class="col-auto">
+                    {{ form_widget(form.orderBy, {'attr':{'onchange': 'this.form.submit()'}}) }}
+                </div>
+                <div class="col-auto">
+                    {{ form_widget(form.orderDirection, {'attr':{'onchange': 'this.form.submit()'}}) }}
+                </div>
+            </div>
+        </div>
+        {{ form_end(form, {'render_rest' : false}) }}
         {% for message in app.flashes('success') %}
             <div class="alert alert-success">
                 {{ message }}

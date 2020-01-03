@@ -1,0 +1,12 @@
+vich_uploader:
+  db_driver: orm
+  mappings:
+    product_files:
+      uri_prefix: /files/commands
+      upload_destination: '%kernel.project_dir%/public/files/commands'
+      directory_namer:
+        service: vich_uploader.namer_directory_property
+        options: {property: 'reference', transliterate: true}
+      namer:
+        service: Vich\UploaderBundle\Naming\PropertyNamer
+        options: { property: 'reference'}

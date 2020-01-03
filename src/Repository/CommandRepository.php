@@ -74,6 +74,13 @@ class CommandRepository extends ServiceEntityRepository
             }
         }
 
+        if ($search->getOrderBy()) {
+            if($search->getOrderBy() == "date") $search->setOrderBy("created_at");
+            if ($search->getOrderDirection()) {
+                $query
+                    ->orderBy('c.' . $search->getOrderBy(), $search->getOrderDirection());
+            }
+        }
 
         return $query->getQuery();
     }

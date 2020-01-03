@@ -36,15 +36,17 @@
                 <div class="order-block-content">
                     <p><b>Quantité commandée :</b> {{ command.quantity }}</p>
                     <p><b>Commande passée le
-                            :</b> {{ command.createdAt.date }}</p>
+                            :</b> {{ command.createdAt.date|date("d/m/Y", false) }}</p>
                     <p><b>Commande mise à jour le
-                            :</b> {{ command.updatedAt.date }}</p>
+                            :</b> {{ command.updatedAt.date|date("d/m/Y", false) }}</p>
                     <p><b>Estimation livraison :</b> <span class="text-danger">WIP</span></p>
                     <p><b>État de la commande :</b> {{ command.stateType }}</p>
                     <p><b>Stock actuel : </b> command.product.quantity </p>
-                    <a href="#" data-toggle="modal" data-target="#filesModal">
-                        Voir les fichiers joints (<span class="text-danger font-weight-bold">WIP</span>)
-                    </a>
+                    {% if command.filename %}
+                        <a href="#" data-toggle="modal" data-target="#filesModal">
+                            Voir les fichiers joints (<span class="text-danger font-weight-bold">WIP</span>)
+                        </a>
+                    {% endif %}
                 </div>
             </div>
             <div class="order-block order-tracking">
@@ -53,24 +55,34 @@
                     <span class="text-danger font-weight-bold">WIP</span>
                 </div>
             </div>
-            <div class="modal fade bd-example-modal-lg" id="filesModal" tabindex="-1" role="dialog"
-                 aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3 class="modal-title red">Fichiers joints</h3>
-                            <button type="button" class="close-icon" data-dismiss="modal" aria-label="Close">
-                                <img src="">
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row files-container">
-                                <span class="text-danger">WIP</span>
+            {% if command.filename %}
+                <div class="modal fade bd-example-modal-lg" id="filesModal" tabindex="-1" role="dialog"
+                     aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title red">Fichiers joints</h3>
+                                <button type="button" class="close-icon" data-dismiss="modal" aria-label="Close">
+                                    <img src="">
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row files-container">
+                                    <div class="col-2 text-break single-file">
+                                        <div class="file-icon-container px-2">
+                                            <img src="#" alt=""
+                                                 class="file-icon img-fluid">
+                                        </div>
+                                        <p class="text-break text-center mt-1 d-inline-block w-100">
+                                            {{command.filename}}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

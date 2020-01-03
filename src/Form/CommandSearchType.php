@@ -39,6 +39,20 @@ class CommandSearchType extends AbstractType
                 'attr' => [
                     'class' => 'form-check-inline'
                 ]
+            ])
+            ->add('orderBy', ChoiceType::class, [
+                'choices' => array_flip(CommandSearch::ORDER_BY)
+            ])
+            ->add('orderDirection', ChoiceType::class, [
+                'choices' => [
+                    "DESC" => "DESC",
+                    "ASC" => "ASC"
+                ],
+                'expanded' => true,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'form-check-inline'
+                ]
             ]);
     }
 

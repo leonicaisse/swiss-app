@@ -5,12 +5,16 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommandRepository")
  * @UniqueEntity("reference")
+ * @Vich\Uploadable()
  */
 class Command
 {
@@ -28,6 +32,18 @@ class Command
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @var string|null
+     * @ORM\Column(type="string", length=255)
+     */
+    private $filename;
+
+    /**
+     * @var File|null
+     * @Vich\UploadableField(mapping="product_files", fileNameProperty="filename")
+     */
+    private $file;
 
     /**
      * @Assert\Regex(pattern="/[0-9]{6}[\.][0-9]{4}$/", htmlPattern=false, message="La référence doit être de la forme 000000.0000")
@@ -56,7 +72,7 @@ class Command
     private $updated_at;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Product", mappedBy="commands")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Product", inversedBy="commands")
      */
     private $products;
 
@@ -162,6 +178,46 @@ class Command
             $product->removeCommand($this);
         }
 
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFilename(): ?string
+    {
+        return $this->filename;
+    }
+
+    /**
+     * @param string|null $filename
+     * @return Command
+     */
+    public function setFilename(?string $filename): Command
+    {
+        $this->filename = $filename;
+        return $this;
+    }
+
+    /**
+     * @return File|null
+     */
+    public function getFile(): ?File
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param File|null $file
+     * @return Command
+     * @throws \Exception
+     */
+    public function setFile(?File $file): Command
+    {
+        $this->file = $file;
+        if ($this->file instanceof UploadedFile) {
+            $this->updated_at = new \DateTime('now');
+        }
         return $this;
     }
 }

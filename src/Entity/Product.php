@@ -19,7 +19,7 @@ class Product
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Command", inversedBy="products")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Command", mappedBy="products")
      */
     private $commands;
 

@@ -12,11 +12,28 @@ class ProductSearch
         "empty" => "Stock absent",
     ];
 
+    const ORDER_BY = [
+        'reference' => 'Référence de produit',
+        'quantity' => 'Quantité en stock'
+    ];
+
     /**
      * @var string|null
      * @Assert\Type("string")
      */
     private $searchInput;
+
+    /**
+     * @var string;
+     * @Assert\Type("string")
+     */
+    private $orderBy = 'reference';
+
+    /**
+     * @var string
+     * @Assert\Type("string")
+     */
+    private $orderDirection = 'DESC';
 
     /**
      * @var array
@@ -39,6 +56,50 @@ class ProductSearch
     public function setSearchInput(?string $searchInput): ProductSearch
     {
         $this->searchInput = $searchInput;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderBy(): string
+    {
+        return $this->orderBy;
+    }
+
+    /**
+     * @param string $orderBy
+     * @return ProductSearch
+     */
+    public function setOrderBy(string $orderBy): ProductSearch
+    {
+        $this->orderBy = $orderBy;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderByType(): string
+    {
+        return self::ORDER_BY[$this->orderBy];
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderDirection(): string
+    {
+        return $this->orderDirection;
+    }
+
+    /**
+     * @param string $orderDirection
+     * @return ProductSearch
+     */
+    public function setOrderDirection(string $orderDirection): ProductSearch
+    {
+        $this->orderDirection = $orderDirection;
         return $this;
     }
 

@@ -5,10 +5,10 @@
 {% block body %}
     <div class="container mt-4">
         <h1>Voir les commandes</h1>
-        <div class="bg-light pt-3 px-3 pb-1 my-4">
-            {{ form_start(form, {'attr':{'class': 'mb-4'}}) }}
+        {{ form_start(form, {'attr':{'class': 'mb-4'}}) }}
+        <div class="bg-light pt-3 px-3 pb-1 mt-4 mb-3">
             <div class="form-row">
-                <div class="form-group col-md-5">
+                <div class="col-md-5">
                     {{ form_row(form.searchInput) }}
                 </div>
                 <div class="form-group col-md-7">
@@ -20,15 +20,28 @@
                 </div>
             </div>
             <div class="form-row">
-                <div class="col-md-1">Afficher:</div>
+                <div class="col-md-1">Afficher :</div>
                 <div class="col-md-11">
                     <div class="row">
                         {{ form_widget(form.state) }}
                     </div>
                 </div>
             </div>
-            {{ form_end(form, {'render_rest' : false}) }}
         </div>
+        <div class="pt-3 pb-1 mt-2 mb-4">
+            <div class="form-row align-items-center">
+                <div class="col-auto">
+                    {{ form_label(form.orderBy) }} :
+                </div>
+                <div class="col-auto">
+                    {{ form_widget(form.orderBy, {'attr':{'onchange': 'this.form.submit()'}}) }}
+                </div>
+                <div class="col-auto">
+                    {{ form_widget(form.orderDirection) }}
+                </div>
+            </div>
+        </div>
+        {{ form_end(form, {'render_rest' : false}) }}
         <div class="row">
             {% for command in commands %}
                 <div class="col-md-4 col-sm mb-2 mb-md-3">
@@ -43,7 +56,7 @@
                                     {% endfor %}
                                 </ul>
                                 <h5 class="ref">quantité: </h5><span class="red">{{ command.quantity }}</span>
-                                <h5 class="ref">commandé le: </h5><span class="red">{{ command.createdAt.date }}</span>
+                                <h5 class="ref">commandé le: </h5><span class="red">{{ command.createdAt.date|date("d/m/Y", false) }}</span>
                                 <p class="state state-{{ command.state }}">{{ command.stateType }}</p>
                             </div>
                             <div class="ml-auto">
