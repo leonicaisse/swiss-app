@@ -3,11 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Command;
-use App\Entity\Product;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Item;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,15 +16,13 @@ class CommandType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('reference')
-            ->add('products', EntityType::class, [
-                'class' => Product::class,
-                'choice_label' => 'reference',
-                'multiple' => true
-            ])
-            ->add('quantity')
-            ->add('file', FileType::class, [
-                'required' => false
+            ->add('reference', TextType::class)
+            ->add('items', CollectionType::class, [
+                'label' => false,
+                'entry_type' => ItemType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'by_reference' => false
             ])
             ->add('state', ChoiceType::class, [
                 'choices' => array_flip(Command::STATE)

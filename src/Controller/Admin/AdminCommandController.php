@@ -4,9 +4,11 @@ namespace App\Controller\Admin;
 
 use App\Entity\Command;
 use App\Entity\CommandSearch;
+use App\Entity\Item;
 use App\Form\CommandSearchType;
 use App\Form\CommandType;
 use App\Repository\CommandRepository;
+use App\Repository\ItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -49,6 +51,7 @@ class AdminCommandController extends AbstractController
 
     public function index(PaginatorInterface $paginator, Request $request)
     {
+        /*
         $search = new CommandSearch();
         $form = $this->createForm(CommandSearchType::class, $search);
         $form->handleRequest($request);
@@ -58,9 +61,11 @@ class AdminCommandController extends AbstractController
             $request->query->getInt('page', 1),
             15
         );
+        */
+        $commands = $this->repository->findAll();
         return $this->render('admin/command/index.html.twig', [
             'commands' => $commands,
-            'form' => $form->createView()
+            //'form' => $form->createView()
         ]);
     }
 
@@ -72,6 +77,7 @@ class AdminCommandController extends AbstractController
     public function new(Request $request)
     {
         $command = new Command();
+
         $form = $this->createForm(CommandType::class, $command);
         $form->handleRequest($request);
 
@@ -96,6 +102,7 @@ class AdminCommandController extends AbstractController
     public function edit(string $reference, Request $request)
     {
         $command = $this->repository->findOneBy(['reference' => $reference]);
+
         if (!$command) $this->handleNotFound();
         $form = $this->createForm(CommandType::class, $command);
         $form->handleRequest($request);
@@ -119,6 +126,11 @@ class AdminCommandController extends AbstractController
     public function delete(Command $command, Request $request)
     {
         if ($this->isCsrfTokenValid('delete' . $command->getId(), $request->get('_token'))) {
+            $itemRepository = $this->getDoctrine()->getRepository(Item::class);
+            $items = $itemRepository->findBy(["command" => $command]);
+            foreach ($items as $item) {
+                $this->em->remove($item);
+            }
             $this->em->remove($command);
             $this->em->flush();
             $this->addFlash('success', 'La commande ' . $command->getReference() . ' a été supprimée avec succès.');

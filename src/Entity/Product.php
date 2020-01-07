@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToMany;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
@@ -17,11 +18,6 @@ class Product
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Command", mappedBy="products")
-     */
-    private $commands;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -49,12 +45,19 @@ class Product
     private $updated_at;
 
     /**
+     * One product has many items. This is the inverse side.
+     * @OneToMany(targetEntity="Item", mappedBy="product", cascade={"persist"})
+     */
+    private $items;
+
+
+    /**
      * Product constructor.
      * @throws \Exception
      */
     public function __construct()
     {
-        $this->commands = new ArrayCollection();
+        $this->items = new ArrayCollection();
         $this->created_at = new \DateTime();
         $this->updated_at = new \DateTime();
     }
@@ -62,32 +65,6 @@ class Product
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Collection|Command[]
-     */
-    public function getCommands(): Collection
-    {
-        return $this->commands;
-    }
-
-    public function addCommand(Command $command): self
-    {
-        if (!$this->commands->contains($command)) {
-            $this->commands[] = $command;
-        }
-
-        return $this;
-    }
-
-    public function removeCommand(Command $command): self
-    {
-        if ($this->commands->contains($command)) {
-            $this->commands->removeElement($command);
-        }
-
-        return $this;
     }
 
     public function getReference(): ?string
@@ -146,6 +123,34 @@ class Product
     public function setUpdatedAt(\DateTimeInterface $updated_at): self
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Item[]
+     */
+    public function getItems(): Collection
+    {
+        return $this->items;
+    }
+
+    public function addItem(Item $item): self
+    {
+        if (!$this->items->contains($item)) {
+            $item->addProduct($this);
+            $this->items[] = $item;
+        }
+
+        return $this;
+    }
+
+    public function removeItem(Item $item): self
+    {
+        if ($this->items->contains($item)) {
+            $item->removeProduct($this);
+            $this->items->removeElement($item);
+        }
 
         return $this;
     }

@@ -5,6 +5,7 @@
 {% block body %}
     <div class="container mt-4">
         <h1>Voir les commandes</h1>
+        {#
         {{ form_start(form, {'attr':{'class': 'mb-4'}}) }}
         <div class="bg-light pt-3 px-3 pb-1 mt-4 mb-3">
             <div class="form-row">
@@ -42,6 +43,7 @@
             </div>
         </div>
         {{ form_end(form, {'render_rest' : false}) }}
+        #}
         <div class="row">
             {% for command in commands %}
                 <div class="col-md-4 col-sm mb-2 mb-md-3">
@@ -51,13 +53,13 @@
                                 <h3 class="ref">n° commande: {{ command.reference }}</h3>
                                 <h5 class="ref">refs. produit:</h5>
                                 <ul>
-                                    {% for product in command.products %}
-                                        <li>{{ product.reference }}</li>
+                                    {% for product in command.items %}
+                                        WIP
                                     {% endfor %}
                                 </ul>
-                                <h5 class="ref">quantité: </h5><span class="red">{{ command.quantity }}</span>
-                                <h5 class="ref">commandé le: </h5><span class="red">{{ command.createdAt.date|date("d/m/Y", false) }}</span>
-                                <p class="state state-{{ command.state }}">{{ command.stateType }}</p>
+                                <h5 class="ref">quantité: </h5><span class="red">WIP</span>
+                                <h5 class="ref">commandé le: </h5><span class="red">WIP</span>
+                                <p class="state state-WIP">WIP</p>
                             </div>
                             <div class="ml-auto">
                                 <a href="{{ path('command.show', {reference: command.reference}) }}">
@@ -69,8 +71,10 @@
                 </div>
             {% endfor %}
         </div>
+        {#
         <div class="pagination pagination-container text-center w-100 d-flex justify-content-center">
             {{ knp_pagination_render(commands) }}
         </div>
+        #}
     </div>
 {% endblock %}

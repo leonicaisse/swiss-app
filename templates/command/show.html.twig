@@ -34,15 +34,15 @@
             <div class="order-block order-infos">
                 <h1 class="order-block-title">Informations sur la commande :</h1>
                 <div class="order-block-content">
-                    <p><b>Quantité commandée :</b> {{ command.quantity }}</p>
+                    <p><b>Quantité commandée :</b> WIP</p>
                     <p><b>Commande passée le
-                            :</b> {{ command.createdAt.date|date("d/m/Y", false) }}</p>
+                            :</b> WIP</p>
                     <p><b>Commande mise à jour le
-                            :</b> {{ command.updatedAt.date|date("d/m/Y", false) }}</p>
+                            :</b> WIP</p>
                     <p><b>Estimation livraison :</b> <span class="text-danger">WIP</span></p>
-                    <p><b>État de la commande :</b> {{ command.stateType }}</p>
-                    <p><b>Stock actuel : </b> command.product.quantity </p>
-                    {% if command.filename %}
+                    <p><b>État de la commande :</b> WIP</p>
+                    <p><b>Stock actuel : </b> WIP </p>
+                    {% if TRUE %}
                         <a href="#" data-toggle="modal" data-target="#filesModal">
                             Voir les fichiers joints (<span class="text-danger font-weight-bold">WIP</span>)
                         </a>
@@ -55,7 +55,7 @@
                     <span class="text-danger font-weight-bold">WIP</span>
                 </div>
             </div>
-            {% if command.filename %}
+            {% if TRUE %}
                 <div class="modal fade bd-example-modal-lg" id="filesModal" tabindex="-1" role="dialog"
                      aria-labelledby="myLargeModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -74,7 +74,7 @@
                                                  class="file-icon img-fluid">
                                         </div>
                                         <p class="text-break text-center mt-1 d-inline-block w-100">
-                                            {{command.filename}}
+                                            WIP
                                         </p>
                                     </div>
                                 </div>

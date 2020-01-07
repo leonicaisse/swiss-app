@@ -43,17 +43,21 @@ class CommandController extends AbstractController
      */
     public function index(PaginatorInterface $paginator, Request $request): Response
     {
+        /*
         $search = new CommandSearch();
         $form = $this->createForm(CommandSearchType::class, $search);
         $form->handleRequest($request);
+
         $commands = $paginator->paginate(
             $this->repository->findAllQuery($search),
             $request->query->getInt('page', 1),
             9
         );
+        */
+        $commands = $this->repository->findAll();
         return $this->render('command/index.html.twig', [
             'commands' => $commands,
-            'form' => $form->createView(),
+            //'form' => $form->createView(),
         ]);
     }
 
