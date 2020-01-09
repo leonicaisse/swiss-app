@@ -34,7 +34,7 @@ class Command
      * @Assert\Regex(pattern="/[0-9]{6}[\.][0-9]{4}$/", htmlPattern=false, message="La référence doit être de la forme 000000.0000")
      * @ORM\Column(type="string", length=255)
      */
-    private $reference;
+    public $reference;
 
     /**
      * @ORM\Column(type="integer", options={"default":0})
@@ -57,6 +57,10 @@ class Command
      */
     private $items;
 
+    /**
+     * Command constructor.
+     * @throws \Exception
+     */
     public function __construct()
     {
         $this->items = new ArrayCollection();

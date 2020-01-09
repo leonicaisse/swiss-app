@@ -51,7 +51,6 @@ class AdminCommandController extends AbstractController
 
     public function index(PaginatorInterface $paginator, Request $request)
     {
-        /*
         $search = new CommandSearch();
         $form = $this->createForm(CommandSearchType::class, $search);
         $form->handleRequest($request);
@@ -61,11 +60,9 @@ class AdminCommandController extends AbstractController
             $request->query->getInt('page', 1),
             15
         );
-        */
-        $commands = $this->repository->findAll();
         return $this->render('admin/command/index.html.twig', [
             'commands' => $commands,
-            //'form' => $form->createView()
+            'form' => $form->createView()
         ]);
     }
 
@@ -73,6 +70,7 @@ class AdminCommandController extends AbstractController
      * @Route(path="/new", name="admin.command.new")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function new(Request $request)
     {
@@ -98,6 +96,7 @@ class AdminCommandController extends AbstractController
      * @param string $reference
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function edit(string $reference, Request $request)
     {
@@ -107,6 +106,7 @@ class AdminCommandController extends AbstractController
         $form = $this->createForm(CommandType::class, $command);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $command->setUpdatedAt(new \DateTime('now'));
             $this->em->flush();
             $this->addFlash('success', 'La commande ' . $command->getReference() . ' a été modifiée avec succès.');
             return $this->redirectToRoute('admin.command.index');

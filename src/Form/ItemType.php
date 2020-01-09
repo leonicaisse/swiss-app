@@ -6,6 +6,7 @@ use App\Entity\Item;
 use App\Entity\Product;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -28,6 +29,9 @@ class ItemType extends AbstractType
                 'attr' => [
                     'class' => 'form-check-inline'
                 ]
+            ])
+            ->add('file', FileType::class, [
+                'required' => false,
             ]);
     }
 
@@ -35,7 +39,7 @@ class ItemType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Item::class,
-            'translation_domain' => 'forms.product'
+            'translation_domain' => 'forms.item'
         ]);
     }
 }

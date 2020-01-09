@@ -22,7 +22,7 @@ class Product
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $reference;
+    public $reference;
 
     /**
      * @ORM\Column(type="integer")

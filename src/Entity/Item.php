@@ -2,12 +2,17 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ItemRepository")
+ * @Vich\Uploadable
  */
 class Item
 {
@@ -18,11 +23,6 @@ class Item
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $reference = NULL;
 
     /**
      * Many items have one command. This is the owning side.
@@ -43,11 +43,32 @@ class Item
      */
     private $quantity;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string|null
+     */
+    private $filename;
 
+    /**
+     * @Vich\UploadableField(mapping="item_files", fileNameProperty="filename")
+     * @var File|null
+     */
+    public $file;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updated_at;
+
+    /**
+     * Item constructor.
+     * @throws \Exception
+     */
     public function __construct()
     {
-        $this->command = new Command();
-        $this->product = new Product();
+        $this->command = new ArrayCollection();
+        $this->product = new ArrayCollection();
+        $this->updated_at = new \DateTime();
     }
 
     /**
@@ -58,22 +79,10 @@ class Item
         return $this->id;
     }
 
-
-    public function getReference(): ?string
-    {
-        return $this->reference;
-    }
-
-    public function setReference(string $reference)
-    {
-        $this->reference = "test";
-        return $this;
-    }
-
     /**
-     * @return Command
+     * @return ArrayCollection
      */
-    public function getCommand(): Command
+    public function getCommand()
     {
         return $this->command;
     }
@@ -94,9 +103,9 @@ class Item
     }
 
     /**
-     * @return Product
+     * @return ArrayCollection
      */
-    public function getProduct(): Product
+    public function getProduct()
     {
         return $this->product;
     }
@@ -130,6 +139,46 @@ class Item
     {
         if ($this->product->contains($product)) {
             $this->product->removeElement($product);
+        }
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFilename(): ?string
+    {
+        return $this->filename;
+    }
+
+    /**
+     * @param string|null $filename
+     * @return Item
+     */
+    public function setFilename(?string $filename): Item
+    {
+        $this->filename = $filename;
+        return $this;
+    }
+
+    /**
+     * @return null|File
+     */
+    public function getFile(): ?File
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param File $file
+     * @return Item
+     * @throws \Exception
+     */
+    public function setFile(File $file): Item
+    {
+        $this->file = $file;
+        if ($this->file instanceof UploadedFile) {
+            $this->updated_at = new \DateTime('now');
         }
         return $this;
     }

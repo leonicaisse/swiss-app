@@ -26,12 +26,14 @@ class CommandRepository extends ServiceEntityRepository
      */
     public function findAllQuery(CommandSearch $search)
     {
-        $query = $this->createQueryBuilder('c');
-        $query->innerJoin('c.products', 'p');
+        $query = $this->createQueryBuilder('command');
+        $query->leftJoin('command.items', 'items');
+        $query->leftJoin('items.product', 'product');
+
 
         if ($search->getState()) {
             foreach ($search->getState() as $k => $v) {
-                $query->orWhere('c.state = :state' . $k)
+                $query->orWhere('command.state = :state' . $k)
                     ->setParameter('state' . $k, $v);
             }
         }
@@ -65,20 +67,20 @@ class CommandRepository extends ServiceEntityRepository
             if ($search->getSearchBy()) {
                 switch ($search->getSearchBy()) {
                     case 'product':
-                        $query->andWhere('p.reference LIKE :searchinput');
+                        $query->andWhere('product.reference LIKE :searchinput');
                         break;
                     case 'reference':
-                        $query->andWhere('c.reference LIKE :searchinput');
+                        $query->andWhere('command.reference LIKE :searchinput');
                 }
                 $query->setParameter('searchinput', '%' . $search->getSearchInput() . '%');
             }
         }
 
         if ($search->getOrderBy()) {
-            if($search->getOrderBy() == "date") $search->setOrderBy("created_at");
+            if ($search->getOrderBy() == "date") $search->setOrderBy("created_at");
             if ($search->getOrderDirection()) {
                 $query
-                    ->orderBy('c.' . $search->getOrderBy(), $search->getOrderDirection());
+                    ->orderBy('command.' . $search->getOrderBy(), $search->getOrderDirection());
             }
         }
 

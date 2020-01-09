@@ -5,7 +5,6 @@
 {% block body %}
     <div class="container mt-4">
         <h1>Gérer les commandes</h1>
-        {#
         {{ form_start(form, {'attr':{'class': 'mb-4'}}) }}
         <div class="bg-light pt-3 px-3 pb-1 mt-4 mb-3">
             <div class="form-row">
@@ -43,7 +42,6 @@
             </div>
         </div>
         {{ form_end(form, {'render_rest' : false}) }}
-        #}
         {% for message in app.flashes('success') %}
             <div class="alert alert-success">
                 {{ message }}
@@ -80,10 +78,8 @@
             {% endfor %}
             </tbody>
         </table>
-        {#
         <div class="pagination pagination-container text-center w-100 d-flex justify-content-center">
             {{ knp_pagination_render(commands) }}
         </div>
-        #}
     </div>
 {% endblock %}

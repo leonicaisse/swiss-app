@@ -1,4 +1,14 @@
 {{ form_start(form) }}
-        {{ form_rest(form) }}
+        {{ form_row(form.reference) }}
+<h3>Produits commandés</h3>
+<div class="items" data-prototype="{{ form_widget(form.items.vars.prototype)|e('html_attr') }}">
+    {# iterate over each existing tag and render its only field: name #}
+    {% for item in form.items %}
+        <div class="item">
+            {{ form_rest(item) }}
+        </div>
+    {% endfor %}
+</div>
+{{ form_rest(form) }}
 <button class="btn btn-primary">{{ button|default('Enregistrer') }}</button>
 {{ form_end(form) }}

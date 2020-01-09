@@ -5,69 +5,74 @@
 {% block body %}
     <div class="container mt-4">
         <h1>Nouvelle commande</h1>
-        {{ form_start(form) }}
-        {{ form_row(form.reference) }}
-        <h3>Produits commandés</h3>
-        <div class="items" data-prototype="{{ form_widget(form.items.vars.prototype)|e('html_attr') }}">
-            {# iterate over each existing tag and render its only field: name #}
-            {% for item in form.items %}
-                {{ form_rest(item) }}
-            {% endfor %}
-        </div>
-        {{ form_rest(form) }}
-        <button class="btn btn-primary">{{ button|default('Enregistrer') }}</button>
-        {{ form_end(form) }}
+        {{ include('admin/command/_form.html.twig') }}
     </div>
 {% endblock %}
 
 {% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js"></script>
     <script>
-        var $collectionHolder;
-
-        // setup an "add a tag" link
-        var $addItemButton = $('<button type="button" class="add_item_link">Add an item</button>');
-        var $newLinkLi = $('<div></div>').append($addItemButton);
+        $('.items select').select2();
+    </script>
+    <script>
+        let addButton;
+        let removeButton;
+        let newItemDiv;
 
         $(document).ready(function () {
+            let itemsHolder;
+
+            // setup an "add a tag" link
+            addButton = $('<button type="button" class="add_item_link">Ajouter un élément</button>');
+            removeButton = $('<button type="button">Delete this item</button>');
+            newItemDiv = $('<div></div>').append(addButton);
+
             // Get the ul that holds the collection of tags
-            $collectionHolder = $('div.items');
+            itemsHolder = $('div.items');
+
+            $('.item').each(function () {
+                console.log($(this));
+                addTagFormDeleteLink($(this));
+            });
 
             // add the "add a tag" anchor and li to the tags ul
-            $collectionHolder.append($newLinkLi);
+            itemsHolder.append(newItemDiv);
 
             // count the current form inputs we have (e.g. 2), use that as the new
             // index when inserting a new item (e.g. 2)
-            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+            itemsHolder.data('index', itemsHolder.find(':input').length);
 
-            $addItemButton.on('click', function (e) {
+            addButton.on('click', function (e) {
                 // add a new tag form (see next code block)
-                addItemForm($collectionHolder, $newLinkLi);
+                addItemForm(itemsHolder, newItemDiv);
             });
         });
 
-        function addItemForm($collectionHolder, $newLinkLi) {
+        function addItemForm(itemsHolder, newItemDiv) {
             // Get the data-prototype explained earlier
-            var prototype = $collectionHolder.data('prototype');
+            let prototype = itemsHolder.data('prototype');
 
             // get the new index
-            var index = $collectionHolder.data('index');
+            let index = itemsHolder.data('index');
 
-            var newForm = prototype;
-            // You need this only if you didn't set 'label' => false in your tags field in TaskType
-            // Replace '__name__label__' in the prototype's HTML to
-            // instead be a number based on how many items we have
-            // newForm = newForm.replace(/__name__label__/g, index);
-
-            // Replace '__name__' in the prototype's HTML to
-            // instead be a number based on how many items we have
+            let newForm = prototype;
             newForm = newForm.replace(/__name__/g, index);
 
-            // increase the index with one for the next item
-            $collectionHolder.data('index', index + 1);
+            itemsHolder.data('index', index + 1);
 
-            // Display the form in the page in an li, before the "Add a tag" link li
-            var $newFormDiv = $('<div></div>').append(newForm);
-            $newLinkLi.before($newFormDiv);
+            let newFormDiv = $('<div></div>').append(newForm);
+            newItemDiv.before(newFormDiv);
+
+            addTagFormDeleteLink(newItemDiv);
+        }
+
+        function addTagFormDeleteLink(newItemDiv) {
+            newItemDiv.append(removeButton);
+
+            removeButton.on('click', function (e) {
+                // remove the li for the tag form
+                newItemDiv.remove();
+            });
         }
     </script>
 {% endblock %}
