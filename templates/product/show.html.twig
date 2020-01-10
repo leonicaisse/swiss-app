@@ -6,7 +6,7 @@
 <div class="container mt-4">
     <a href="{{path('product.index')}}">Retour aux produits</a>
     <h1 class="red">Détails pour {{product.reference}}</h1>
-    <h2>Stock actuel : {{product.quantity}} / Seuil critique : {{product.critical|default('Aucun')}}</h2>
+    <h2>Stock actuel : {{product.quantity}} / Seuil critique : {{product.critical|default('Non défini')}}</h2>
     <div class="last-input">
         <h2>Dernière entrée de stock :
             <span class="text-danger font-weight-bold">WIP</span>

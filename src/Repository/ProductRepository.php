@@ -36,10 +36,10 @@ class ProductRepository extends ServiceEntityRepository
                         array_push($filters, 'p.quantity = 0');
                         break;
                     case "low":
-                        array_push($filters, 'p.quantity <= p.critical AND p.quantity > 0');
+                        array_push($filters, '(p.quantity <= p.critical AND p.quantity > 0) OR p.critical IS NULL');
                         break;
                     case "high":
-                        array_push($filters, 'p.quantity > p.critical');
+                        array_push($filters, '(p.quantity > p.critical) OR p.critical IS NULL');
                         break;
                 }
             }

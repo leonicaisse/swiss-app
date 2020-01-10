@@ -8,6 +8,10 @@ parameters:
   app.path.item_files: /uploads/files
 
 services:
+  twig.extension.intl:
+    class: Twig_Extensions_Extension_Intl
+    tags:
+      name: twig.extension
   item_files.directory_namer:
     class: App\Namer\DirectoryNamer
     public: true

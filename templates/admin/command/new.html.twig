@@ -15,63 +15,38 @@
         $('.items select').select2();
     </script>
     <script>
-        let addButton;
-        let removeButton;
-        let newItemDiv;
+        let newItemButton = $('<button type="button" class="new_item_button">Ajouter un item</button>');
+        let itemsCollection;
 
         $(document).ready(function () {
-            let itemsHolder;
-
-            // setup an "add a tag" link
-            addButton = $('<button type="button" class="add_item_link">Ajouter un élément</button>');
-            removeButton = $('<button type="button">Delete this item</button>');
-            newItemDiv = $('<div></div>').append(addButton);
-
-            // Get the ul that holds the collection of tags
-            itemsHolder = $('div.items');
-
-            $('.item').each(function () {
-                console.log($(this));
-                addTagFormDeleteLink($(this));
+            itemsCollection = $('.items');
+            itemsCollection.find('.item').each(function () {
+                addRemoveButton($(this));
             });
+            itemsCollection.append(newItemButton);
+            itemsCollection.data('index', itemsCollection.find(':input').length);
 
-            // add the "add a tag" anchor and li to the tags ul
-            itemsHolder.append(newItemDiv);
-
-            // count the current form inputs we have (e.g. 2), use that as the new
-            // index when inserting a new item (e.g. 2)
-            itemsHolder.data('index', itemsHolder.find(':input').length);
-
-            addButton.on('click', function (e) {
-                // add a new tag form (see next code block)
-                addItemForm(itemsHolder, newItemDiv);
+            newItemButton.on('click', function (e) {
+                addItemForm(itemsCollection, newItemButton);
             });
         });
 
-        function addItemForm(itemsHolder, newItemDiv) {
-            // Get the data-prototype explained earlier
-            let prototype = itemsHolder.data('prototype');
-
-            // get the new index
-            let index = itemsHolder.data('index');
-
-            let newForm = prototype;
-            newForm = newForm.replace(/__name__/g, index);
-
-            itemsHolder.data('index', index + 1);
-
-            let newFormDiv = $('<div></div>').append(newForm);
-            newItemDiv.before(newFormDiv);
-
-            addTagFormDeleteLink(newItemDiv);
+        function addItemForm(itemsCollection, newItemButton) {
+            let index = itemsCollection.data('index');
+            let newItemForm = itemsCollection.data('prototype');
+            newItemForm = newItemForm.replace(/__name__/g, index);
+            itemsCollection.data('index', index + 1);
+            let newItemFormDiv = $('<div class="item"></div>').append(newItemForm);
+            newItemButton.before(newItemFormDiv);
+            addRemoveButton(newItemFormDiv);
         }
 
-        function addTagFormDeleteLink(newItemDiv) {
-            newItemDiv.append(removeButton);
-
-            removeButton.on('click', function (e) {
+        function addRemoveButton(item) {
+            let removeItemButton = $('<button type="button" class="remove_item_button">Supprimer l\'item</button>');
+            $(item).append(removeItemButton);
+            removeItemButton.on('click', function (e) {
                 // remove the li for the tag form
-                newItemDiv.remove();
+                item.remove();
             });
         }
     </script>

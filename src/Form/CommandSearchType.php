@@ -51,7 +51,7 @@ class CommandSearchType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
                 'attr' => [
-                    'class' => 'form-check-inline'
+                    'class' => 'form-check-inline',
                 ]
             ]);
     }

@@ -49,7 +49,7 @@ class Command
     /**
      * @ORM\Column(type="datetime")
      */
-    private $updated_at;
+    public $updated_at;
 
     /**
      * One command has many items. This is the inverse side.
@@ -137,8 +137,8 @@ class Command
     public function addItem(Item $item): self
     {
         if (!$this->items->contains($item)) {
+            $this->items->add($item);
             $item->addCommand($this);
-            $this->items[] = $item;
         }
 
         return $this;
@@ -147,7 +147,6 @@ class Command
     public function removeItem(Item $item): self
     {
         if ($this->items->contains($item)) {
-            $item->removeCommand($this);
             $this->items->removeElement($item);
         }
 

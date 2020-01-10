@@ -32,30 +32,54 @@
         </div>
         <div class="order-blocks">
             <div class="order-block order-infos">
-                <h1 class="order-block-title">Informations sur la commande :</h1>
+                <h2 class="order-block-title">Informations sur la commande :</h2>
                 <div class="order-block-content">
-                    <p><b>Quantité commandée :</b> WIP</p>
                     <p><b>Commande passée le
-                            :</b> WIP</p>
+                            : </b>{{ command.createdAt.date|date('d/m/Y \\à H\\hi', 'Europe/Paris') }}
+                    </p>
                     <p><b>Commande mise à jour le
-                            :</b> WIP</p>
+                            : </b>{{ command.updatedAt.date|date('d/m/Y \\à H\\hi', 'Europe/Paris') }}</p>
                     <p><b>Estimation livraison :</b> <span class="text-danger">WIP</span></p>
-                    <p><b>État de la commande :</b> WIP</p>
-                    <p><b>Stock actuel : </b> WIP </p>
-                    {% if TRUE %}
+                    <p><b>État de la commande :</b> {{ command.stateType }}</p>
+                    {% if FALSE %}
                         <a href="#" data-toggle="modal" data-target="#filesModal">
                             Voir les fichiers joints (<span class="text-danger font-weight-bold">WIP</span>)
                         </a>
                     {% endif %}
                 </div>
             </div>
+            <div class="order-block order-products">
+                <h2 class="order-block-title">Contenu de la commande :</h2>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Référence produit</th>
+                        <th>Quantité commandée</th>
+                        <th>Quantité en stock/Quantité critique</th>
+                        <th>Fichier joint</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in command.items %}
+                        <tr>
+                            <td>{{ item.product.reference }}</td>
+                            <td>{{ item.orderedQuantity }}</td>
+                            <td>{{ item.product.quantity }}/{{ item.product.critical|default('Non défini') }}</td>
+                            <td>{% if item.filename %}<a
+                                    href="{{ vich_uploader_asset(item,'file') }}">{{ item.filename }}</a>{% else %}Aucun fichier joint{% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
             <div class="order-block order-tracking">
-                <h1 class="order-block-title">Suivi de la livraison :</h1>
+                <h2 class="order-block-title">Suivi de la livraison :</h2>
                 <div class="order-block-content">
                     <span class="text-danger font-weight-bold">WIP</span>
                 </div>
             </div>
-            {% if TRUE %}
+            {% if FALSE %}
                 <div class="modal fade bd-example-modal-lg" id="filesModal" tabindex="-1" role="dialog"
                      aria-labelledby="myLargeModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg modal-dialog-centered">

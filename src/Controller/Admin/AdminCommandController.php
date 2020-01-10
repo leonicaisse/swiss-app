@@ -9,6 +9,7 @@ use App\Form\CommandSearchType;
 use App\Form\CommandType;
 use App\Repository\CommandRepository;
 use App\Repository\ItemRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -103,9 +104,22 @@ class AdminCommandController extends AbstractController
         $command = $this->repository->findOneBy(['reference' => $reference]);
 
         if (!$command) $this->handleNotFound();
+
+        // Create an ArrayCollection of the current Item objects in the database
+        $originalItems = new ArrayCollection();
+        foreach ($command->getItems() as $item) {
+            $originalItems->add($item);
+        }
+
         $form = $this->createForm(CommandType::class, $command);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($originalItems as $item) {
+                if (false === $command->getItems()->contains($item)) {
+                    $this->em->remove($item);
+                }
+            }
+
             $command->setUpdatedAt(new \DateTime('now'));
             $this->em->flush();
             $this->addFlash('success', 'La commande ' . $command->getReference() . ' a été modifiée avec succès.');

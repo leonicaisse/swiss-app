@@ -93,12 +93,9 @@ class Item
         return $this;
     }
 
-    public function removeCommand(Command $command): self
+    public function setCommand($command): self
     {
-        if ($this->command->contains($command)) {
-            $this->command->removeElement($command);
-        }
-
+        $this->command = $command;
         return $this;
     }
 
@@ -178,6 +175,7 @@ class Item
     {
         $this->file = $file;
         if ($this->file instanceof UploadedFile) {
+            $this->command->updated_at = new \DateTime('now');
             $this->updated_at = new \DateTime('now');
         }
         return $this;

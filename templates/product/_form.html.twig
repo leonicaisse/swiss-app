@@ -1,0 +1,34 @@
+{{ form_start(form, {'attr':{'class': 'mb-4'}}) }}
+<div class="bg-light pt-3 px-3 pb-1 mt-4 mb-3">
+    <div class="form-row">
+        <div class="form-group col-md-5">
+            {{ form_label(form.searchInput) }}
+            <div class="form-inline w-100">
+                {{ form_widget(form.searchInput) }}
+                <button type="submit" class="btn btn-primary ml-2">Rechercher</button>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-1">Afficher :</div>
+        <div class="col-md-11">
+            <div class="row">
+                {{ form_widget(form.stock) }}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="pt-3 pb-1 mt-2 mb-4">
+    <div class="form-row align-items-center">
+        <div class="col-auto">
+            {{ form_label(form.orderBy) }} :
+        </div>
+        <div class="col-auto">
+            {{ form_widget(form.orderBy, {'attr':{'onchange': 'this.form.submit()'}}) }}
+        </div>
+        <div class="col-auto">
+            {{ form_widget(form.orderDirection) }}
+        </div>
+    </div>
+</div>
+{{ form_end(form, {'render_rest' : false}) }}
