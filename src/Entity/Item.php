@@ -61,6 +61,21 @@ class Item
     private $updated_at;
 
     /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $estimatedDelivery;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $realDelivery;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $deliverTo;
+
+    /**
      * Item constructor.
      * @throws \Exception
      */
@@ -178,6 +193,42 @@ class Item
             $this->command->updated_at = new \DateTime('now');
             $this->updated_at = new \DateTime('now');
         }
+        return $this;
+    }
+
+    public function getEstimatedDelivery(): ?\DateTimeInterface
+    {
+        return $this->estimatedDelivery;
+    }
+
+    public function setEstimatedDelivery(?\DateTimeInterface $estimatedDelivery): self
+    {
+        $this->estimatedDelivery = $estimatedDelivery;
+
+        return $this;
+    }
+
+    public function getRealDelivery(): ?\DateTimeInterface
+    {
+        return $this->realDelivery;
+    }
+
+    public function setRealDelivery(?\DateTimeInterface $realDelivery): self
+    {
+        $this->realDelivery = $realDelivery;
+
+        return $this;
+    }
+
+    public function getDeliverTo(): ?string
+    {
+        return $this->deliverTo;
+    }
+
+    public function setDeliverTo(?string $deliverTo): self
+    {
+        $this->deliverTo = $deliverTo;
+
         return $this;
     }
 }

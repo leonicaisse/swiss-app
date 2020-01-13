@@ -50,6 +50,11 @@ class Product
      */
     private $items;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
 
     /**
      * Product constructor.
@@ -151,6 +156,18 @@ class Product
             $item->removeProduct($this);
             $this->items->removeElement($item);
         }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

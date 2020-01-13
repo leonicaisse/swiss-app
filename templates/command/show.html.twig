@@ -39,7 +39,6 @@
                     </p>
                     <p><b>Commande mise à jour le
                             : </b>{{ command.updatedAt.date|date('d/m/Y \\à H\\hi', 'Europe/Paris') }}</p>
-                    <p><b>Estimation livraison :</b> <span class="text-danger">WIP</span></p>
                     <p><b>État de la commande :</b> {{ command.stateType }}</p>
                     {% if FALSE %}
                         <a href="#" data-toggle="modal" data-target="#filesModal">
@@ -50,13 +49,16 @@
             </div>
             <div class="order-block order-products">
                 <h2 class="order-block-title">Contenu de la commande :</h2>
-                <table class="table table-striped">
+                <table id="productsTable" class="table table-striped table-bordered table-sm" cellspacing="0"
+                       width="100%">
                     <thead>
                     <tr>
                         <th>Référence produit</th>
                         <th>Quantité commandée</th>
                         <th>Quantité en stock/Quantité critique</th>
-                        <th>Fichier joint</th>
+                        <th>Livrer à</th>
+                        <th>Livraison estimée/Livraison effective</th>
+                        <th>Fichier(s) joint(s)</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -65,6 +67,9 @@
                             <td>{{ item.product.reference }}</td>
                             <td>{{ item.orderedQuantity }}</td>
                             <td>{{ item.product.quantity }}/{{ item.product.critical|default('Non défini') }}</td>
+                            <td>{{ item.deliverTo }}</td>
+                            <td>{{ item.estimatedDelivery.date|date('d-m-Y', 'Europe/Paris') }}
+                                / {{ item.realDelivery ? item.realDelivery.date|date('d-m-Y', 'Europe/Paris') : 'ND' }}</td>
                             <td>{% if item.filename %}<a
                                     href="{{ vich_uploader_asset(item,'file') }}">{{ item.filename }}</a>{% else %}Aucun fichier joint{% endif %}
                             </td>
@@ -109,6 +114,21 @@
             {% endif %}
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $('#productsTable').DataTable({
+                "scrollX": true,
+                "scrollY": 200,
+                "searching": false,
+                "paging": false,
+                "info": false
+            });
+            $('.dataTables_length').addClass('bs-select');
+        });
+    </script>
 {% endblock %}
 
 

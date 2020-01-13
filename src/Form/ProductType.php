@@ -14,7 +14,8 @@ class ProductType extends AbstractType
         $builder
             ->add('reference')
             ->add('quantity')
-            ->add('critical');
+            ->add('critical')
+            ->add('description');
     }
 
     public function configureOptions(OptionsResolver $resolver)
