@@ -1,5 +1,8 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+{% endblock %}
+
 {% block title %}Détails pour {{ command.reference }}{% endblock %}
 
 {% block body %}
@@ -7,26 +10,22 @@
         <a href="{{ path('command.index') }}">Retour aux commandes</a>
         <h1 class="red">Détails pour la commande {{ command.reference }}</h1>
         <div class="order-tracking-line-container">
-            <div class="order-tracking-line">
-                <div class="tracking-step">
-                    <div class="tracking-point green"></div>
-                    <div class="tracking-text">fichier(s) reçu(s)</div>
+            <div class="order-tracking-line tracking-state-{{ command.state }}">
+                <div class="tracking-step tracking-step-files">
+                    <div class="tracking-point"></div>
+                    <div class="tracking-text">{{ command.state >= 1 ? 'fichier(s) reçu(s)' : 'en attente de fichier(s)' }}</div>
                 </div>
-                <div class="tracking-step">
-                    <div class="tracking-point green"></div>
-                    <div class="tracking-text">B.A.T. reçu</div>
+                <div class="tracking-step tracking-step-proof">
+                    <div class="tracking-point"></div>
+                    <div class="tracking-text">{{ command.state >= 2 ? 'B.A.T. reçu' : command.state == 1 ? 'En attente de B.A.T' : '&nbsp;' }}</div>
                 </div>
-                <div class="tracking-step">
-                    <div class="tracking-point green"></div>
-                    <div class="tracking-text">production terminée</div>
+                <div class="tracking-step tracking-step-prod">
+                    <div class="tracking-point"></div>
+                    <div class="tracking-text">{{ command.state >= 3 ? 'Production terminée' : command.state == 2 ? 'En cours de production' : '&nbsp;' }}</div>
                 </div>
-                <div class="tracking-step">
-                    <div class="tracking-point orange"></div>
-                    <div class="tracking-text">en cours de livraison</div>
-                </div>
-                <div class="tracking-step">
-                    <div class="tracking-point grey"></div>
-                    <div class="tracking-text">&nbsp;</div>
+                <div class="tracking-step tracking-step-ship">
+                    <div class="tracking-point"></div>
+                    <div class="tracking-text">{{ command.state == 4 ? 'Livrée' : command.state == 3 ? 'En cours de livraison' : '&nbsp;' }}</div>
                 </div>
             </div>
         </div>
@@ -39,7 +38,6 @@
                     </p>
                     <p><b>Commande mise à jour le
                             : </b>{{ command.updatedAt.date|date('d/m/Y \\à H\\hi', 'Europe/Paris') }}</p>
-                    <p><b>État de la commande :</b> {{ command.stateType }}</p>
                     {% if FALSE %}
                         <a href="#" data-toggle="modal" data-target="#filesModal">
                             Voir les fichiers joints (<span class="text-danger font-weight-bold">WIP</span>)
@@ -55,9 +53,11 @@
                     <tr>
                         <th>Référence produit</th>
                         <th>Quantité commandée</th>
-                        <th>Quantité en stock/Quantité critique</th>
+                        <th>Quantité en stock</th>
+                        <th>Quantité critique</th>
                         <th>Livrer à</th>
-                        <th>Livraison estimée/Livraison effective</th>
+                        <th>Livraison estimée</th>
+                        <th>Livraison effective</th>
                         <th>Fichier(s) joint(s)</th>
                     </tr>
                     </thead>
@@ -66,12 +66,17 @@
                         <tr>
                             <td>{{ item.product.reference }}</td>
                             <td>{{ item.orderedQuantity }}</td>
-                            <td>{{ item.product.quantity }}/{{ item.product.critical|default('Non défini') }}</td>
+                            <td>{{ item.product.quantity }}</td>
+                            <td>{{ item.product.critical|default('Non défini') }}</td>
                             <td>{{ item.deliverTo }}</td>
-                            <td>{{ item.estimatedDelivery.date|date('d-m-Y', 'Europe/Paris') }}
-                                / {{ item.realDelivery ? item.realDelivery.date|date('d-m-Y', 'Europe/Paris') : 'ND' }}</td>
-                            <td>{% if item.filename %}<a
-                                    href="{{ vich_uploader_asset(item,'file') }}">{{ item.filename }}</a>{% else %}Aucun fichier joint{% endif %}
+                            <td>{{ item.estimatedDelivery.date|date('d-m-Y', 'Europe/Paris') }}</td>
+                            <td>{{ item.realDelivery ? item.realDelivery.date|date('d-m-Y', 'Europe/Paris') : 'ND' }}</td>
+                            <td>
+                                {% if item.filename %}
+                                    <a href="{{ vich_uploader_asset(item,'file') }}">{{ item.filename }}</a>
+                                {% else %}
+                                    Aucun fichier joint
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
@@ -117,18 +122,6 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script>
-        $(document).ready(function () {
-            $('#productsTable').DataTable({
-                "scrollX": true,
-                "scrollY": 200,
-                "searching": false,
-                "paging": false,
-                "info": false
-            });
-            $('.dataTables_length').addClass('bs-select');
-        });
-    </script>
 {% endblock %}
 
 

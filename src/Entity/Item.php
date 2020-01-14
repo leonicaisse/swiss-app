@@ -174,7 +174,7 @@ class Item
     }
 
     /**
-     * @return null|File
+     * @return File|null
      */
     public function getFile(): ?File
     {

@@ -14,46 +14,6 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js"></script>
-    <script>
-        $('.items select').select2();
-    </script>
-    <script>
-        let newItemButton = $('<button type="button" class="new_item_button">Ajouter un item</button>');
-        let itemsCollection;
-
-        $(document).ready(function () {
-            itemsCollection = $('.items');
-            itemsCollection.find('.item').each(function () {
-                addRemoveButton($(this));
-            });
-            itemsCollection.append(newItemButton);
-            itemsCollection.data('index', itemsCollection.find(':input').length);
-
-            newItemButton.on('click', function (e) {
-                addItemForm(itemsCollection, newItemButton);
-            });
-        });
-
-        function addItemForm(itemsCollection, newItemButton) {
-            let index = itemsCollection.data('index');
-            let newItemForm = itemsCollection.data('prototype');
-            newItemForm = newItemForm.replace(/__name__/g, index);
-            itemsCollection.data('index', index + 1);
-            let newItemFormDiv = $('<div class="item"></div>').append(newItemForm);
-            newItemButton.before(newItemFormDiv);
-            addRemoveButton(newItemFormDiv);
-        }
-
-        function addRemoveButton(item) {
-            let removeItemButton = $('<button type="button" class="remove_item_button">Supprimer l\'item</button>');
-            $(item).append(removeItemButton);
-            removeItemButton.on('click', function (e) {
-                // remove the li for the tag form
-                item.remove();
-            });
-        }
-    </script>
 {% endblock %}
 
 
