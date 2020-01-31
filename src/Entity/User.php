@@ -3,13 +3,27 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
+use Symfony\Component\Mailer\Transport\Smtp\SmtpTransport;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity("username")
+ * @UniqueEntity("email")
  */
 class User implements UserInterface, \Serializable
 {
+    const ROLES = [
+        '0' => 'ROLE_USER',
+        '1' => 'ROLE_ADMIN',
+    ];
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -31,6 +45,12 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="json")
      */
     private $roles = [];
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Email
+     */
+    private $email;
 
     public function getId(): ?int
     {
@@ -95,7 +115,6 @@ class User implements UserInterface, \Serializable
     }
 
 
-
     /**
      * Returns the salt that was originally used to encode the password.
      *
@@ -149,5 +168,28 @@ class User implements UserInterface, \Serializable
             $this->username,
             $this->password,
             ) = unserialize($serialized, ['allowed_classes' => false]);
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @param $email
+     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
+     */
+    public function notify($email)
+    {
+        $transport = new EsmtpTransport('localhost', 1025);
+        $mailer = new Mailer($transport);
+        $mailer->send($email);
     }
 }

@@ -3,14 +3,11 @@
 {% block title 'Éditer la commande' %}
 
 {% block body %}
-    <div class="container mt-4">
+    <div class="container my-4">
         <h1>Éditer la commande {{ command.reference }}</h1>
+        <i class="text-danger">N'oubliez pas de sauvegarder les modifications</i>
         {{ include('admin/command/_form.html.twig') }}
     </div>
-{% endblock %}
-
-{% block stylesheets %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css">
 {% endblock %}
 
 {% block javascripts %}

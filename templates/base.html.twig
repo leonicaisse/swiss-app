@@ -3,82 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %} - SwissStock</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
     {{ encore_entry_link_tags('app') }}
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
-<div class="sticky-top">
-    {#
-    {% if app.user and "ROLE_ADMIN" in app.user.roles %}
-        <div class="bg-dark text-light">
-            <div class="container text-center">
-                Vous êtes connecté(e) en tant qu'administrateur
+{% if app.user %}
+    <div class="sticky-top">
+        {#
+        {% if app.user and "ROLE_ADMIN" in app.user.roles %}
+            <div class="bg-dark text-light">
+                <div class="container text-center">
+                    Vous êtes connecté(e) en tant qu'administrateur
+                </div>
             </div>
-        </div>
-    {% endif %}
-    #}
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="{{ path('home') }}">SwissStock</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        {% endif %}
+        #}
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+            <div class="container">
+                <a class="navbar-brand" href="{{ path('home') }}">SwissStock</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    {% if app.user and app.user.username == "admin.demo" %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Commandes</a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ path('command.index') }}">Voir les commandes</a>
-                                <a class="dropdown-item" href="{{ path('admin.command.index') }}">Gérer les
-                                    commandes</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Stock</a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ path('product.index') }}">Voir le stock</a>
-                                <a class="dropdown-item" href="{{ path('admin.product.index') }}">Gérer le
-                                    stock</a>
-                            </div>
-                        </li>
-                    {% else %}
-                        <li class="nav-item {{ ('command' in app.request.get('_route')) ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ path('command.index') }}">Commandes</a>
-                        </li>
-                        <li class="nav-item {{ ('product' in app.request.get('_route')) ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ path('product.index') }}">Stock</a>
-                        </li>
-                    {% endif %}
-                </ul>
-                <ul class="navbar-nav ml-auto">
-                    {% if app.user %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{ app.user.username }}
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ path('logout') }}">Déconnexion</a>
-                            </div>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('login') }}">Connexion</a>
-                        </li>
-                    {% endif %}
-                </ul>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        {% if app.user and "ROLE_ADMIN" in app.user.roles %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Commandes</a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ path('command.index') }}">Voir les commandes</a>
+                                    <a class="dropdown-item" href="{{ path('admin.command.index') }}">Gérer les
+                                        commandes</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Stock</a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ path('product.index') }}">Voir le stock</a>
+                                    <a class="dropdown-item" href="{{ path('admin.product.index') }}">Gérer le
+                                        stock</a>
+                                </div>
+                            </li>
+                            <li class="nav-item {{ ('user' in app.request.get('_route')) ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ path('admin.user.index') }}">Utilisateurs</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item {{ ('command' in app.request.get('_route')) ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ path('command.index') }}">Commandes</a>
+                            </li>
+                            <li class="nav-item {{ ('product' in app.request.get('_route')) ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ path('product.index') }}">Stock</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        {% if app.user %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ app.user.username }}
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ path('logout') }}">Déconnexion</a>
+                                </div>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('login') }}">Connexion</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
-</div>
+        </nav>
+    </div>
+{% endif %}
 {% block body %}{% endblock %}
 {{ encore_entry_script_tags('app') }}
 {% block javascripts %}

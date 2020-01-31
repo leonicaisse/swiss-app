@@ -23,12 +23,12 @@ class ItemType extends AbstractType
                 'choice_label' => 'reference',
                 'multiple' => false,
                 'attr' => [
-                    'class' => 'form-check-inline'
+                    'class' => 'col'
                 ]
             ])
             ->add('orderedQuantity', IntegerType::class, [
                 'attr' => [
-                    'class' => 'form-check-inline'
+                    'class' => 'col'
                 ]
             ])
             ->add('file', FileType::class, [

@@ -3,7 +3,7 @@
 {% block title 'Gérer le stock' %}
 
 {% block body %}
-    <div class="container mt-4">
+    <div class="container my-4">
         <h1>Gérer le stock</h1>
         {{ include('product/_form.html.twig') }}
         {% for message in app.flashes('success') %}

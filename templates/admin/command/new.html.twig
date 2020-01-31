@@ -3,8 +3,9 @@
 {% block title 'Nouvelle commande' %}
 
 {% block body %}
-    <div class="container mt-4">
+    <div class="container my-4">
         <h1>Nouvelle commande</h1>
+        <i class="text-danger">N'oubliez pas de sauvegarder les modifications</i>
         {{ include('admin/command/_form.html.twig') }}
     </div>
 {% endblock %}

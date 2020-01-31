@@ -3,8 +3,9 @@
 {% block title 'Éditer le produit' %}
 
 {% block body %}
-    <div class="container mt-4">
+    <div class="container my-4">
         <h1>Éditer le produit {{ product.reference }}</h1>
+        <i class="text-danger">N'oubliez pas de sauvegarder les modifications</i>
         {{ include('admin/product/_form.html.twig') }}
     </div>
 {% endblock %}

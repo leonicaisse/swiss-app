@@ -1,0 +1,195 @@
+.order-tracking
+  width: 60%
+
+.order-tracking-line
+  display: flex
+  justify-content: space-around
+  margin: 40px 0
+
+.tracking-step
+  display: flex
+  flex-direction: column
+  align-items: center
+  width: 180px
+
+.tracking-point
+  width: 26px
+  height: 26px
+  border-radius: 50%
+  border: #fff 4px solid
+  position: relative
+
+  &:before
+    position: absolute
+    content: ''
+    width: calc(100% + 12px)
+    height: calc(100% + 12px)
+    border-radius: 50%
+    top: -6px
+    left: -6px
+
+.tracking-text
+  margin-top: 10px
+
+.tracking-step:not(:first-of-type) > .tracking-point:after
+  position: absolute
+  content: ''
+  height: 3px
+  width: 260px
+  right: 0
+  top: calc(50% - 2px)
+  z-index: -1
+
+.tracking-state-0
+  .tracking-step-files
+    color: $orange
+
+    .tracking-point
+      background-color: $orange
+
+      &:before
+        border: $orange 3px solid
+
+      &:after
+        background-color: $orange
+
+  .tracking-step-proof,
+  .tracking-step-prod,
+  .tracking-step-ship,
+  .tracking-step-end
+    color: $grey
+
+    .tracking-point
+      background-color: $grey
+
+      &:before
+        border: $grey 3px solid
+
+      &:after
+        background-color: $grey
+
+.tracking-state-1
+
+  .tracking-step-files
+    color: $green
+
+    .tracking-point
+      background-color: $green
+
+      &:before
+        border: $green 3px solid
+
+
+      &:after
+        background-color: $green
+
+.tracking-step-proof
+  color: $orange
+
+  .tracking-point
+    background-color: $orange
+
+    &:before
+      border: $orange 3px solid
+
+    &:after
+      background-color: $orange
+
+.tracking-step-prod,
+.tracking-step-ship,
+.tracking-step-end
+  color: $grey
+
+  .tracking-point
+    background-color: $grey
+
+    &:before
+      border: $grey 3px solid
+
+    &:after
+      background-color: $grey
+
+.tracking-state-2
+
+  .tracking-step-files,
+  .tracking-step-proof
+    color: $green
+
+    .tracking-point
+      background-color: $green
+
+      &:before
+        border: $green 3px solid
+
+      &:after
+        background-color: $green
+
+.tracking-step-prod
+  color: $orange
+
+  .tracking-point
+    background-color: $orange
+
+    &:before
+      border: $orange 3px solid
+
+    &:after
+      background-color: $orange
+
+.tracking-step-ship,
+.tracking-step-end
+  color: $grey
+
+  .tracking-point
+    background-color: $grey
+
+    &:before
+      border: $grey 3px solid
+
+    &:after
+      background-color: $grey
+
+.tracking-state-3
+
+  .tracking-step-files,
+  .tracking-step-proof,
+  .tracking-step-prod
+    color: $green
+
+    .tracking-point
+      background-color: $green
+
+      &:before
+        border: $green 3px solid
+
+      &:after
+        background-color: $green
+
+.tracking-step-ship
+  color: $orange
+
+  .tracking-point
+    background-color: $orange
+
+    &:before
+      border: $orange 3px solid
+
+    &:after
+      background-color: $orange
+
+.tracking-state-4
+
+  .tracking-step-files,
+  .tracking-step-proof,
+  .tracking-step-prod,
+  .tracking-step-ship
+    color: $green
+
+    .tracking-point
+      background-color: $green
+
+      &:before
+        border: $green 3px solid
+
+      &:after
+        background-color: $green

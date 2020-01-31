@@ -1,0 +1,12 @@
+{% extends 'mail_base.html.twig' %}
+
+{% block body %}
+    <h1 class="mail-header">Bienvenue sur Swissapp</h1>
+
+    Bonjour {{ user.username }}, votre compte a été créé.
+
+    <h1>Votre mot de passe provisoire est <span class="text-danger">{{ plain_text_password }}</span></h1>
+
+    Pour vous connecter, rendez vous sur <a href="{{ url('login') }}">la page de connexion</a>.
+    Merci!
+{% endblock %}

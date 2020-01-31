@@ -76,6 +76,11 @@ class Item
     private $deliverTo;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $delivered;
+
+    /**
      * Item constructor.
      * @throws \Exception
      */
@@ -84,6 +89,7 @@ class Item
         $this->command = new ArrayCollection();
         $this->product = new ArrayCollection();
         $this->updated_at = new \DateTime();
+        $this->delivered = false;
     }
 
     /**
@@ -228,6 +234,18 @@ class Item
     public function setDeliverTo(?string $deliverTo): self
     {
         $this->deliverTo = $deliverTo;
+
+        return $this;
+    }
+
+    public function getDelivered(): ?bool
+    {
+        return $this->delivered;
+    }
+
+    public function setDelivered(bool $delivered): self
+    {
+        $this->delivered = $delivered;
 
         return $this;
     }

@@ -6,7 +6,7 @@
 {% block title %}Détails pour {{ command.reference }}{% endblock %}
 
 {% block body %}
-    <div class="container mt-4">
+    <div class="container my-4">
         <a href="{{ path('command.index') }}">Retour aux commandes</a>
         <h1 class="red">Détails pour la commande {{ command.reference }}</h1>
         <div class="order-tracking-line-container">
@@ -57,7 +57,7 @@
                         <th>Quantité critique</th>
                         <th>Livrer à</th>
                         <th>Livraison estimée</th>
-                        <th>Livraison effective</th>
+                        <th>Livré</th>
                         <th>Fichier(s) joint(s)</th>
                     </tr>
                     </thead>
@@ -70,7 +70,7 @@
                             <td>{{ item.product.critical|default('Non défini') }}</td>
                             <td>{{ item.deliverTo }}</td>
                             <td>{{ item.estimatedDelivery.date|date('d-m-Y', 'Europe/Paris') }}</td>
-                            <td>{{ item.realDelivery ? item.realDelivery.date|date('d-m-Y', 'Europe/Paris') : 'ND' }}</td>
+                            <td>{{ item.realDelivery ? item.realDelivery.date|date('d-m-Y', 'Europe/Paris') : 'Non' }}</td>
                             <td>
                                 {% if item.filename %}
                                     <a href="{{ vich_uploader_asset(item,'file') }}">{{ item.filename }}</a>

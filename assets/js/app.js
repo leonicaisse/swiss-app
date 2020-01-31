@@ -6,7 +6,7 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import '../css/app.scss';
+import '../css/app.sass';
 
 import $ from 'jquery';
 import 'bootstrap';
@@ -14,12 +14,13 @@ import 'popper.js';
 import 'select2';
 import 'datatables.net-dt';
 
-$('.items select').select2();
-
-let newItemButton = $('<button type="button" class="new_item_button">Ajouter un item</button>');
+let newItemButton = $('<button type="button" class="new_item_button" id="newItemButton">Ajouter un item</button>');
 let itemsCollection;
 
+
 $(document).ready(function () {
+    convertSelect($('.item'));
+
     $('#productsTable').DataTable({
         "scrollX": true,
         "scrollY": 200,
@@ -50,13 +51,17 @@ function addItemForm(itemsCollection, newItemButton) {
     let newItemFormDiv = $('<div class="item"></div>').append(newItemForm);
     newItemButton.before(newItemFormDiv);
     addRemoveButton(newItemFormDiv);
+    convertSelect(newItemFormDiv);
 }
 
 function addRemoveButton(item) {
     let removeItemButton = $('<button type="button" class="remove_item_button">Supprimer l\'item</button>');
     $(item).append(removeItemButton);
-    removeItemButton.on('click', function (e) {
-        // remove the li for the tag form
+    removeItemButton.on('click', function () {
         item.remove();
     });
+}
+
+function convertSelect(item) {
+    item.find('select').select2();
 }
