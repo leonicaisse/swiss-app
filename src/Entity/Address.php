@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToMany;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AddressRepository")
@@ -55,6 +57,12 @@ class Address
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $address_line_3;
+
+    /**
+     * One address has many items. This is the inverse side.
+     * @OneToMany(targetEntity="Item", mappedBy="address", cascade={"persist"})
+     */
+    private $items;
 
     public function getId(): ?int
     {
@@ -153,6 +161,34 @@ class Address
     public function setAddressLine3(string $address_line_3): self
     {
         $this->address_line_3 = $address_line_3;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Item[]
+     */
+    public function getItems(): Collection
+    {
+        return $this->items;
+    }
+
+    public function addItem(Item $item): self
+    {
+        if (!$this->items->contains($item)) {
+            $item->addProduct($this);
+            $this->items[] = $item;
+        }
+
+        return $this;
+    }
+
+    public function removeItem(Item $item): self
+    {
+        if ($this->items->contains($item)) {
+            $item->removeProduct($this);
+            $this->items->removeElement($item);
+        }
 
         return $this;
     }
