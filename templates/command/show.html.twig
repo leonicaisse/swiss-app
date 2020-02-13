@@ -64,11 +64,14 @@
                     <tbody>
                     {% for item in command.items %}
                         <tr>
-                            <td>{{ item.product.reference }}</td>
+                            <td>
+                                <a href="{{ path('product.show', {'reference': item.product.reference}) }}" target="_blank">{{ item.product.reference }}</a>
+                            </td>
                             <td>{{ item.orderedQuantity }}</td>
                             <td>{{ item.product.quantity }}</td>
                             <td>{{ item.product.critical|default('Non défini') }}</td>
-                            <td>{{ item.deliverTo }}</td>
+                            <td><a href="{{ path('address.show', {'id': item.deliverTo.id}) }}"
+                                   target="_blank">{{ item.deliverTo.name }}</a></td>
                             <td>{{ item.estimatedDelivery.date|date('d-m-Y', 'Europe/Paris') }}</td>
                             <td>{{ item.realDelivery ? item.realDelivery.date|date('d-m-Y', 'Europe/Paris') : 'Non' }}</td>
                             <td>

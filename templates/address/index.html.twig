@@ -1,23 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title 'Voir le stock' %}
+{% block title 'Voir les adresses' %}
 
 {% block body %}
     <div class="container mt-4">
-        <h1>Voir le stock</h1>
-        {{ include('product/_form.html.twig') }}
+        <h1>Voir les adresses</h1>
+        {{ include('address/_form.html.twig') }}
         <div class="row">
-            {% for product in products %}
+            {% for address in addresses %}
                 <div class="col-md-4 col-sm mb-2 mb-md-3">
                     <div class="card">
                         <div class="card-body d-flex">
                             <div>
-                                <h3 class="ref">ref: {{ product.reference }}</h3>
-                                <h3 class="ref">quantité en stock: {{ product.quantity }}</h3>
-                                <h3 class="ref">Description: {{ product.description }}</h3>
+                                <h3 class="ref">{{ address.name }}</h3>
+                                <h3 class="ref">{{ address.country }}</h3>
+                                <h3 class="ref">{{ address.department }}</h3>
+                                <h3 class="ref">{{ address.postalCode }}, {{ address.city }}</h3>
+                                <h3 class="ref">{{ address.addressLine1 }}</h3>
+                                <h3 class="ref">{{ address.addressLine2 }}</h3>
+                                <h3 class="ref">{{ address.addressLine3 }}</h3>
                             </div>
                             <div class="ml-auto">
-                                <a href="{{ path('product.show', {'reference' : product.reference}) }}">icone</a>
+                                <a href="{{ path('address.show', {'id' : address.id}) }}">icone</a>
                             </div>
                         </div>
                     </div>
@@ -29,7 +33,7 @@
             {% endfor %}
         </div>
         <div class="pagination pagination-container text-center w-100 d-flex justify-content-center">
-            {{ knp_pagination_render(products) }}
+            {{ knp_pagination_render(addresses) }}
         </div>
     </div>
 {% endblock %}

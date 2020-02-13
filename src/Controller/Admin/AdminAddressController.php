@@ -3,8 +3,11 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Address;
+use App\Entity\AddressSearch;
+use App\Form\AddressSearchType;
 use App\Form\AddressType;
 use App\Repository\AddressRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,28 +19,41 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminAddressController extends AbstractController
 {
     /**
-     * @Route("/", name="admin.address.index", methods={"GET"})
-     * @param AddressRepository $addressRepository
-     * @return Response
+     * @var AddressRepository
      */
-    public function index(AddressRepository $addressRepository): Response
-    {
-        return $this->render('admin/address/index.html.twig', [
-            'addresses' => $addressRepository->findAll(),
-        ]);
-    }
-
+    private $addressRepository;
 
     /**
-     * @Route("/{id}", name="admin.address.show", methods={"GET"})
+     * AdminAddressController constructor.
+     * @param AddressRepository $addressRepository
      */
-    public function show(Address $address): Response
+    public function __construct(AddressRepository $addressRepository)
     {
-        return $this->render('admin/address/show.html.twig', [
-            'address' => $address,
-        ]);
+        $this->addressRepository = $addressRepository;
     }
 
+    /**
+     * @Route("/", name="admin.address.index", methods={"GET"})
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
+     */
+    public function index(PaginatorInterface $paginator, Request $request)
+    {
+        $search = new AddressSearch();
+        $form = $this->createForm(AddressSearchType::class, $search);
+        $form->handleRequest($request);
+
+        $addresses = $paginator->paginate(
+            $this->addressRepository->findAllQuery($search),
+            $request->query->getInt('page', 1),
+            15
+        );
+        return $this->render('admin/address/index.html.twig', [
+            'addresses' => $addresses,
+            'form' => $form->createView()
+        ]);
+    }
 
     /**
      * @Route("/new", name="admin.address.new", methods={"GET","POST"})
@@ -84,10 +100,13 @@ class AdminAddressController extends AbstractController
 
     /**
      * @Route("/{id}", name="admin.address.delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Address $address
+     * @return Response
      */
     public function delete(Request $request, Address $address): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $address->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $address->getId(), $request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($address);
             $entityManager->flush();

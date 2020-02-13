@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block title %}Détails pour l'adresse "{{ address.name }}"{% endblock %}
+
+{% block body %}
+    <div class="container my-4">
+        <a href="{{ path('address.index') }}">Retour aux adresses</a>
+        <h1 class="red">Détails pour l'adresse "{{ address.name }}"</h1>
+        <p class="address_name">{{ address.name }}</p>
+        <p class="address_name">{{ address.country }}</p>
+        <p class="address_name">{{ address.department }}</p>
+        <p class="address_name">{{ address.city }}</p>
+        <p class="address_name">{{ address.postalCode }}</p>
+        <p class="address_name">{{ address.addressLine1 }}</p>
+        <p class="address_name">{{ address.addressLine2 }}</p>
+        <p class="address_name">{{ address.addressLine3 }}</p>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Address;
+use App\Entity\AddressSearch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -17,6 +18,32 @@ class AddressRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Address::class);
+    }
+
+    public function findAllQuery(AddressSearch $search)
+    {
+        $query = $this->createQueryBuilder('address');
+
+        if ($search->getSearchInput()) {
+            if ($search->getSearchBy()) {
+                switch ($search->getSearchBy()) {
+                    case 'name':
+                        $query->andWhere('address.name LIKE :searchinput');
+                        break;
+                }
+                $query->setParameter('searchinput', '%' . $search->getSearchInput() . '%');
+            }
+        }
+
+        if ($search->getOrderBy()) {
+            if ($search->getOrderBy() == "date") $search->setOrderBy("created_at");
+            if ($search->getOrderDirection()) {
+                $query
+                    ->orderBy('address.' . $search->getOrderBy(), $search->getOrderDirection());
+            }
+        }
+
+        return $query->getQuery();
     }
 
     // /**

@@ -60,7 +60,7 @@ class Address
 
     /**
      * One address has many items. This is the inverse side.
-     * @OneToMany(targetEntity="Item", mappedBy="address", cascade={"persist"})
+     * @OneToMany(targetEntity="Item", mappedBy="deliverTo", cascade={"persist"})
      */
     private $items;
 
