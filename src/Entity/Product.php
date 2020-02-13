@@ -24,6 +24,10 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Regex(
+     *     pattern="/^MOD[0-9]{4}$/",
+     *     message="Vous devez respecter le format MOD."
+     * )
      */
     public $reference;
 

@@ -69,7 +69,6 @@
         background-color: $grey
 
 .tracking-state-1
-
   .tracking-step-files
     color: $green
 
@@ -83,31 +82,32 @@
       &:after
         background-color: $green
 
-.tracking-step-proof
-  color: $orange
+  .tracking-step-proof
+    color: $orange
 
-  .tracking-point
-    background-color: $orange
-
-    &:before
-      border: $orange 3px solid
-
-    &:after
+    .tracking-point
       background-color: $orange
 
-.tracking-step-prod,
-.tracking-step-ship,
-.tracking-step-end
-  color: $grey
+      &:before
+        border: $orange 3px solid
 
-  .tracking-point
-    background-color: $grey
+      &:after
+        background-color: $orange
 
-    &:before
-      border: $grey 3px solid
 
-    &:after
+  .tracking-step-prod,
+  .tracking-step-ship,
+  .tracking-step-end
+    color: $grey
+
+    .tracking-point
       background-color: $grey
+
+      &:before
+        border: $grey 3px solid
+
+      &:after
+        background-color: $grey
 
 .tracking-state-2
 
@@ -124,33 +124,33 @@
       &:after
         background-color: $green
 
-.tracking-step-prod
-  color: $orange
 
-  .tracking-point
-    background-color: $orange
+  .tracking-step-prod
+    color: $orange
 
-    &:before
-      border: $orange 3px solid
-
-    &:after
+    .tracking-point
       background-color: $orange
 
-.tracking-step-ship,
-.tracking-step-end
-  color: $grey
+      &:before
+        border: $orange 3px solid
 
-  .tracking-point
-    background-color: $grey
+      &:after
+        background-color: $orange
 
-    &:before
-      border: $grey 3px solid
+  .tracking-step-ship,
+  .tracking-step-end
+    color: $grey
 
-    &:after
+    .tracking-point
       background-color: $grey
 
-.tracking-state-3
+      &:before
+        border: $grey 3px solid
 
+      &:after
+        background-color: $grey
+
+.tracking-state-3
   .tracking-step-files,
   .tracking-step-proof,
   .tracking-step-prod
@@ -165,17 +165,17 @@
       &:after
         background-color: $green
 
-.tracking-step-ship
-  color: $orange
+  .tracking-step-ship
+    color: $orange
 
-  .tracking-point
-    background-color: $orange
-
-    &:before
-      border: $orange 3px solid
-
-    &:after
+    .tracking-point
       background-color: $orange
+
+      &:before
+        border: $orange 3px solid
+
+      &:after
+        background-color: $orange
 
 .tracking-state-4
 

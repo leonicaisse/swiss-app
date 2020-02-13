@@ -64,7 +64,9 @@
                     <tbody>
                     {% for item in command.items %}
                         <tr>
-                            <td>{{ item.product.reference }}</td>
+                            <td>
+                                <a href="{{ path('product.show', {reference: item.product.reference}) }}" target="_blank">{{ item.product.reference }}</a>
+                            </td>
                             <td>{{ item.orderedQuantity }}</td>
                             <td>{{ item.product.quantity }}</td>
                             <td>{{ item.product.critical|default('Non défini') }}</td>

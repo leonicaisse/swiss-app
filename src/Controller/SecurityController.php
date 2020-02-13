@@ -80,7 +80,7 @@ class SecurityController extends AbstractController
                 $token = $tokenGenerator->generateToken();
                 $password_reset = new PasswordReset();
                 $password_reset->setEmail($user->getEmail());
-                $password_reset->setToken($token);
+                $password_reset->setToken(sha1($token));
                 $this->em->persist($password_reset);
                 $this->em->flush();
                 $url = $this->generateUrl('password.reset', ['token' => $token, 'email' => $user->getEmail()], UrlGeneratorInterface::ABSOLUTE_URL);
@@ -112,7 +112,8 @@ class SecurityController extends AbstractController
         $form = $this->createForm(ResetPasswordType::class);
         $form->handleRequest($request);
         $email = $request->get('email');
-        $passwordReset = $this->resetRepository->findOneBy(['token' => $token]);
+        $encrypted_token = sha1($token);
+        $passwordReset = $this->resetRepository->findOneBy(['token' => $encrypted_token]);
         if ($passwordReset && $email) {
             if ($passwordReset->isValidFor($email)) {
                 if ($form->isSubmitted() && $form->isValid()) {

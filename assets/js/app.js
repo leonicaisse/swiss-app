@@ -63,5 +63,15 @@ function addRemoveButton(item) {
 }
 
 function convertSelect(item) {
-    item.find('select').select2();
+    let newProductUrl = '/admin/products/new'; // a generer grace aux routes
+    item.find('select').select2({
+        "language": {
+            "noResults": function () {
+                return "Aucun résultat - <a href='" + newProductUrl + "' class='text-danger'>Nouveau produit</a>";
+            }
+        },
+        escapeMarkup: function (markup) {
+            return markup;
+        }
+    });
 }

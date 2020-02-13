@@ -41,11 +41,11 @@
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Stock</a>
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Produits</a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ path('product.index') }}">Voir le stock</a>
-                                    <a class="dropdown-item" href="{{ path('admin.product.index') }}">Gérer le
-                                        stock</a>
+                                    <a class="dropdown-item" href="{{ path('product.index') }}">Voir les produits</a>
+                                    <a class="dropdown-item" href="{{ path('admin.product.index') }}">Gérer les
+                                        produits</a>
                                 </div>
                             </li>
                             <li class="nav-item {{ ('user' in app.request.get('_route')) ? 'active' : '' }}">
@@ -56,7 +56,7 @@
                                 <a class="nav-link" href="{{ path('command.index') }}">Commandes</a>
                             </li>
                             <li class="nav-item {{ ('product' in app.request.get('_route')) ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ path('product.index') }}">Stock</a>
+                                <a class="nav-link" href="{{ path('product.index') }}">Produits</a>
                             </li>
                         {% endif %}
                     </ul>

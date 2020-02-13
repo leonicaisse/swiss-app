@@ -98,7 +98,7 @@ class AdminUserController extends AbstractController
             $token = $tokenGenerator->generateToken();
             $password_reset = new PasswordReset();
             $password_reset->setEmail($user->getEmail());
-            $password_reset->setToken($token);
+            $password_reset->setToken(sha1($token));
             $this->em->persist($password_reset);
             $this->em->flush();
             $url = $this->generateUrl('password.reset', ['token' => $token, 'email' => $user->getEmail()], UrlGeneratorInterface::ABSOLUTE_URL);
