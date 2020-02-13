@@ -24,7 +24,7 @@ class ItemType extends AbstractType
                 'choice_label' => 'reference',
                 'multiple' => false,
                 'attr' => [
-                    'class' => 'col'
+                    'class' => 'select-product'
                 ]
             ])
             ->add('orderedQuantity', IntegerType::class, [
@@ -50,6 +50,9 @@ class ItemType extends AbstractType
                 'class' => Address::class,
                 'choice_label' => 'name',
                 'multiple' => false,
+                'attr' => [
+                    'class' => 'select-address'
+                ]
             ]);
     }
 

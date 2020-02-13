@@ -63,5 +63,24 @@ function addRemoveButton(item) {
 }
 
 function convertSelect(item) {
-    item.find('select').select2();
+    item.find('.select-product').select2({
+        "language": {
+            "noResults": function () {
+                return "Aucun résultat - <a href='{{ path('admin.product.new') }}' class='text-danger' target='_blank'>Créer une référence</a>";
+            }
+        },
+        escapeMarkup: function (markup) {
+            return markup;
+        }
+    });
+    item.find('.select-address').select2({
+        "language": {
+            "noResults": function () {
+                return "Aucun résultat - <a href='{{ path('admin.address.new') }}' class='text-danger' target='_blank'>Créer une adresse</a>";
+            }
+        },
+        escapeMarkup: function (markup) {
+            return markup;
+        }
+    });
 }
