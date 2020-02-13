@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Gérer les adresses' %}
+
+{% block body %}
+    <div class="container my-4">
+        <h1>Address index</h1>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Country</th>
+                <th>Department</th>
+                <th>City</th>
+                <th>Postal_code</th>
+                <th>Address_line_1</th>
+                <th>Address_line_2</th>
+                <th>Address_line_3</th>
+                <th>actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for address in addresses %}
+                <tr>
+                    <td>{{ address.id }}</td>
+                    <td>{{ address.name }}</td>
+                    <td>{{ address.country }}</td>
+                    <td>{{ address.department }}</td>
+                    <td>{{ address.city }}</td>
+                    <td>{{ address.postalCode }}</td>
+                    <td>{{ address.addressLine1 }}</td>
+                    <td>{{ address.addressLine2 }}</td>
+                    <td>{{ address.addressLine3 }}</td>
+                    <td>
+                        <a href="{{ path('admin.address.show', {'id': address.id}) }}">show</a>
+                        <a href="{{ path('admin.address.edit', {'id': address.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="10">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('admin.address.new') }}">Create new</a>
+    </div>
+{% endblock %}
