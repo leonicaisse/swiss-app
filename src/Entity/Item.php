@@ -71,7 +71,9 @@ class Item
     private $realDelivery;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * Many items have one address. This is the owning side.
+     * @ManyToOne(targetEntity="Address", inversedBy="items", cascade={"persist"})
+     * @JoinColumn(name="address_id", referencedColumnName="id")
      */
     private $deliverTo;
 
@@ -226,12 +228,15 @@ class Item
         return $this;
     }
 
-    public function getDeliverTo(): ?string
+    /**
+     * @return mixed
+     */
+    public function getDeliverTo()
     {
         return $this->deliverTo;
     }
 
-    public function setDeliverTo(?string $deliverTo): self
+    public function setDeliverTo($deliverTo): self
     {
         $this->deliverTo = $deliverTo;
 

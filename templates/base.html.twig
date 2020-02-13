@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %} - SwissStock</title>
@@ -31,25 +31,39 @@
                     <ul class="navbar-nav mr-auto">
                         {% if app.user and "ROLE_ADMIN" in app.user.roles %}
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                <a class="nav-link dropdown-toggle" href="#" id="commandsDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Commandes</a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <div class="dropdown-menu" aria-labelledby="commandsDropdown">
                                     <a class="dropdown-item" href="{{ path('command.index') }}">Voir les commandes</a>
                                     <a class="dropdown-item" href="{{ path('admin.command.index') }}">Gérer les
                                         commandes</a>
                                 </div>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                <a class="nav-link dropdown-toggle" href="#" id="productsDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Produits</a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <div class="dropdown-menu" aria-labelledby="productsDropdown">
                                     <a class="dropdown-item" href="{{ path('product.index') }}">Voir les produits</a>
                                     <a class="dropdown-item" href="{{ path('admin.product.index') }}">Gérer les
                                         produits</a>
                                 </div>
                             </li>
-                            <li class="nav-item {{ ('user' in app.request.get('_route')) ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ path('admin.user.index') }}">Utilisateurs</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="addressDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Adresses</a>
+                                <div class="dropdown-menu" aria-labelledby="addressDropdown">
+                                    <a class="dropdown-item" href="{{ path('address.index') }}">Voir les adresses</a>
+                                    <a class="dropdown-item" href="{{ path('admin.address.index') }}">Gérer les
+                                        adresses</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="usersDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Utilisateurs</a>
+                                <div class="dropdown-menu" aria-labelledby="usersDropdown">
+                                    <a class="dropdown-item" href="{{ path('admin.user.index') }}">Gérer les
+                                        utilisateurs</a>
+                                </div>
                             </li>
                         {% else %}
                             <li class="nav-item {{ ('command' in app.request.get('_route')) ? 'active' : '' }}">

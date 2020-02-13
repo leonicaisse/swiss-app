@@ -63,11 +63,23 @@ function addRemoveButton(item) {
 }
 
 function convertSelect(item) {
-    let newProductUrl = '/admin/products/new'; // a generer grace aux routes
-    item.find('select').select2({
+    const pathToNewProduct = '/admin/products/new';
+    const pathToNewAddress = '/admin/address/new';
+
+    item.find('.select-product').select2({
         "language": {
             "noResults": function () {
-                return "Aucun résultat - <a href='" + newProductUrl + "' class='text-danger'>Nouveau produit</a>";
+                return "Aucun résultat - <a href='" + pathToNewProduct + "' class='text-danger' target='_blank'>Créer une référence</a>";
+            }
+        },
+        escapeMarkup: function (markup) {
+            return markup;
+        }
+    });
+    item.find('.select-address').select2({
+        "language": {
+            "noResults": function () {
+                return "Aucun résultat - <a href='" + pathToNewAddress + "' class='text-danger' target='_blank'>Créer une adresse</a>";
             }
         },
         escapeMarkup: function (markup) {

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Nouvelle adresse'%}
+
+{% block body %}
+    <div class="container my-4">
+        <a href="{{ path('admin.address.index') }}">Retourner à la liste des adresses</a>
+        <h1>Nouvelle adresse</h1>
+        <i class="text-danger">N'oubliez pas de sauvegarder les modifications</i>
+        {{ include('admin/address/_form.html.twig') }}
+    </div>
+{% endblock %}

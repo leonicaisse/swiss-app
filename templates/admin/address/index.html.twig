@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Gérer les adresses' %}
+
+{% block body %}
+    <div class="container my-4">
+        <h1>Gérer les adresses</h1>
+        {{ include('address/_form.html.twig') }}
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        <div class="my-3">
+            <a href="{{ path('admin.address.new') }}" class="btn btn-primary">Nouvelle adresse</a>
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Raison sociale</th>
+                <th>Pays</th>
+                <th>Département</th>
+                <th>Ville</th>
+                <th>Code postal</th>
+                <th>Adresse ligne 1</th>
+                <th>Adresse ligne 2</th>
+                <th>Adresse ligne 3</th>
+                <th>actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for address in addresses %}
+                <tr>
+                    <td>{{ address.name }}</td>
+                    <td>{{ address.country }}</td>
+                    <td>{{ address.department }}</td>
+                    <td>{{ address.city }}</td>
+                    <td>{{ address.postalCode }}</td>
+                    <td>{{ address.addressLine1 }}</td>
+                    <td>{{ address.addressLine2 }}</td>
+                    <td>{{ address.addressLine3 }}</td>
+                    <td>
+                        <a href="{{ path('admin.address.edit', {id: address.id}) }}"
+                           class="btn btn-secondary">Éditer</a>
+                        <form method="post" action="{{ path('admin.address.delete', {id: address.id}) }}"
+                              class="d-inline-block"
+                              onsubmit="return confirm('Voulez-vous vraiment supprimer cette adresse?')">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete'~address.id) }}">
+                            <button class="btn btn-danger">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="10">Aucun résultat</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('admin.address.new') }}">Create new</a>
+    </div>
+{% endblock %}

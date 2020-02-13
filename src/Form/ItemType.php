@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Address;
 use App\Entity\Item;
 use App\Entity\Product;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -23,7 +24,7 @@ class ItemType extends AbstractType
                 'choice_label' => 'reference',
                 'multiple' => false,
                 'attr' => [
-                    'class' => 'col'
+                    'class' => 'select-product'
                 ]
             ])
             ->add('orderedQuantity', IntegerType::class, [
@@ -45,7 +46,15 @@ class ItemType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'required' => false
             ])
-            ->add('deliverTo');
+            ->add('deliverTo', EntityType::class, [
+                'label' => 'Address',
+                'class' => Address::class,
+                'choice_label' => 'name',
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'select-address'
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
