@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Address;
 use App\Entity\Item;
 use App\Entity\Product;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -47,9 +48,11 @@ class ItemType extends AbstractType
                 'required' => false
             ])
             ->add('deliverTo', EntityType::class, [
-                'label' => 'Address',
-                'class' => Address::class,
-                'choice_label' => 'name',
+                'label' => 'Livrer à',
+                'class' => User::class,
+                'choice_label' => function (User $user) {
+                    return $user->getFullname() . ' ( ' . $user->getAddress()->getName(). ' ) ';
+                },
                 'multiple' => false,
                 'attr' => [
                     'class' => 'select-address'

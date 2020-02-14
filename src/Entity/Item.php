@@ -72,8 +72,8 @@ class Item
 
     /**
      * Many items have one address. This is the owning side.
-     * @ManyToOne(targetEntity="Address", inversedBy="items", cascade={"persist"})
-     * @JoinColumn(name="address_id", referencedColumnName="id")
+     * @ManyToOne(targetEntity="User", inversedBy="items", cascade={"persist"})
+     * @JoinColumn(name="deliver_to_id", referencedColumnName="id")
      */
     private $deliverTo;
 
