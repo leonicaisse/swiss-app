@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Address;
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -26,6 +28,21 @@ class UserType extends AbstractType
                 'multiple' => true,
                 'attr' => [
                     'class' => 'form-check-inline'
+                ]
+            ])
+            ->add('firstname')
+            ->add('lastname')
+            ->add('phone')
+            ->add('service')
+            ->add('address', EntityType::class, [
+                'label' => 'Adresse',
+                'class' => Address::class,
+                'choice_label' => function (Address $address) {
+                    return $address->getName() . ' (' . $address->getAddressLine1() . ', ' . $address->getPostalCode() . ' ' . $address->getCity() . ')';
+                },
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'select-address'
                 ]
             ]);
     }
